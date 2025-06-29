@@ -413,7 +413,7 @@ export default function ManageClientPage({
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
                         task.completed 
                           ? 'border-green-500 bg-green-500' 
-                          : 'border-border group-hover:border-accent/50'
+                          : 'border-slate-700 group-hover:border-accent/50'
                       }`}
                     >
                       {task.completed && (
