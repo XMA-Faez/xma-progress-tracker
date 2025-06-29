@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# XMA Progress Tracker
 
-## Getting Started
+A modern progress tracking system for advertising agencies to manage client projects through production stages.
 
-First, run the development server:
+## Features
+
+- **Admin Dashboard**: Manage all clients and their projects
+- **Client Progress Pages**: Unique URLs for each client to track their project progress
+- **Task Management**: Add, edit, delete, and update task progress
+- **Task Types**: 
+  - Calls (Red)
+  - Project tasks (Blue)
+  - Revision rounds (Yellow)
+- **4 Production Stages**: Onboarding, Pre-production, Production, Launch
+- **Progress Visualization**: Linear progress bar with milestone markers
+- **External Links**: Frame and Google Drive integration
+- **Dark Mode**: Modern aesthetic with blue primary color
+
+## Setup Instructions
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd xma-progress-tracker
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Set up Supabase
 
-## Learn More
+1. Create a new Supabase project at [supabase.com](https://supabase.com)
+2. Copy the SQL from `supabase-schema.sql` and run it in the Supabase SQL editor
+3. Get your project URL and anon key from the project settings
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Configure environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy `.env.example` to `.env.local` and fill in your Supabase credentials:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cp .env.example .env.local
+```
 
-## Deploy on Vercel
+### 5. Create admin user
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+In Supabase dashboard:
+1. Go to Authentication → Users
+2. Click "Invite user"
+3. Enter admin email and password
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 6. Run the development server
+
+```bash
+bun run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Usage
+
+1. **Admin Login**: Navigate to `/login` and sign in with your admin credentials
+2. **Create Client**: Click "Add New Client" and enter client details
+3. **Manage Tasks**: Click on a client to manage their tasks (check/uncheck, edit, add, delete)
+4. **Share Progress**: Share the unique client URL with clients to view their progress
+
+## Project Structure
+
+- `/src/app` - Next.js app router pages
+- `/src/components` - Reusable UI components
+- `/src/lib` - Utility functions and Supabase client
+- `/src/types` - TypeScript type definitions
+- `/src/utils` - Helper functions and default data
+
+## Technologies
+
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Supabase (PostgreSQL + Auth)
+- Framer Motion
+- Lucide Icons
