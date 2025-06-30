@@ -193,12 +193,26 @@ export default function ClientPageContent({
               <div className="space-y-3">
                 <div className="relative h-6 w-full overflow-hidden rounded-full bg-secondary/50 backdrop-blur-sm border border-accent/20">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-accent via-accent to-accent/80 shadow-lg relative"
+                    className="h-full bg-gradient-to-r from-accent via-accent to-accent/80 shadow-lg relative overflow-hidden"
                     initial={{ width: 0 }}
                     animate={{ width: `${progressPercentage}%` }}
                     transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <motion.div 
+                      className="absolute top-0 left-0 w-full h-full"
+                      style={{
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+                      }}
+                      animate={{
+                        x: ["-100%", "100%"],
+                      }}
+                      transition={{
+                        duration: 2,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        repeatDelay: 0.5,
+                      }}
+                    />
                   </motion.div>
 
                   {/* Stage milestone marks */}
