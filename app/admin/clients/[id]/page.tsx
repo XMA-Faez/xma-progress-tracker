@@ -24,6 +24,8 @@ import {
   Edit3,
   ExternalLink,
   Check,
+  StickyNote,
+  Save,
 } from "lucide-react";
 import { Client, ClientTask, Stage, TaskType } from "@/types";
 
@@ -64,6 +66,9 @@ export default function ManageClientPage({
     frame_link: "",
     google_drive_link: "",
   });
+  const [notes, setNotes] = useState("");
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [notesSaving, setNotesSaving] = useState(false);
 
   useEffect(() => {
     const getParams = async () => {
@@ -96,6 +101,7 @@ export default function ManageClientPage({
         frame_link: clientData.frame_link || "",
         google_drive_link: clientData.google_drive_link || "",
       });
+      setNotes(clientData.notes || "");
 
       // Fetch tasks
       const { data: tasksData, error: tasksError } = await supabase
@@ -240,6 +246,28 @@ export default function ManageClientPage({
     }
   };
 
+  const handleSaveNotes = async () => {
+    if (!client) return;
+    
+    setNotesSaving(true);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("clients")
+        .update({ notes })
+        .eq("id", client.id);
+
+      if (error) throw error;
+      
+      setIsEditingNotes(false);
+      fetchClientAndTasks();
+    } catch (error) {
+      console.error("Error saving notes:", error);
+    } finally {
+      setNotesSaving(false);
+    }
+  };
+
   const openEditModal = (task: ClientTask) => {
     setSelectedTask(task);
     setTaskForm({
@@ -374,6 +402,72 @@ export default function ManageClientPage({
                 <Plus className="mr-2 h-4 w-4" /> Add Task
               </Button>
             </div>
+          </div>
+        </motion.div>
+
+        {/* Notes Section */}
+        <motion.div variants={itemVariants} className="glass-card rounded-xl p-6 backdrop-blur-lg mb-8">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <StickyNote className="h-5 w-5 text-accent" />
+                <h3 className="text-lg font-semibold">Internal Notes</h3>
+                <span className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-md">
+                  Admin Only
+                </span>
+              </div>
+              {!isEditingNotes && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditingNotes(true)}
+                  className="btn-glass"
+                >
+                  <Edit className="mr-2 h-3.5 w-3.5" />
+                  Edit
+                </Button>
+              )}
+            </div>
+            
+            {isEditingNotes ? (
+              <div className="space-y-3">
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="w-full rounded-lg border border-input bg-background/50 px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
+                  rows={6}
+                  placeholder="Add internal notes about this client..."
+                />
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    onClick={handleSaveNotes}
+                    disabled={notesSaving}
+                    className="btn-glass"
+                  >
+                    <Save className="mr-2 h-3.5 w-3.5" />
+                    {notesSaving ? "Saving..." : "Save"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setNotes(client?.notes || "");
+                      setIsEditingNotes(false);
+                    }}
+                    disabled={notesSaving}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className={`rounded-lg border border-border/50 bg-secondary/20 p-4 ${!notes ? 'text-muted-foreground italic' : 'text-foreground'}`}>
+                <p className="whitespace-pre-wrap text-sm">
+                  {notes || "No notes added yet. Click Edit to add notes."}
+                </p>
+              </div>
+            )}
           </div>
         </motion.div>
 

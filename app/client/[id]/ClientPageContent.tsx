@@ -144,38 +144,34 @@ export default function ClientPageContent({
                 <h2 className="text-3xl font-bold gradient-text">{client.name}</h2>
                 <p className="text-muted-foreground">Project Progress Tracker</p>
               </div>
+              {(client.frame_link || client.google_drive_link) && (
+                <div className="flex items-center gap-3">
+                  {client.frame_link && (
+                    <a
+                      href={client.frame_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-glass inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold group"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200" />
+                      View Frame
+                    </a>
+                  )}
+                  {client.google_drive_link && (
+                    <a
+                      href={client.google_drive_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-glass inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold group"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200" />
+                      View Google Drive
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
-
-          {/* Links Section */}
-          {(client.frame_link || client.google_drive_link) && (
-            <motion.div variants={itemVariants} className="glass-card rounded-xl p-6 backdrop-blur-lg">
-              <div className="flex items-center justify-center gap-4">
-                {client.frame_link && (
-                  <a
-                    href={client.frame_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-glass inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold group"
-                  >
-                    <ExternalLink className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
-                    View Frame
-                  </a>
-                )}
-                {client.google_drive_link && (
-                  <a
-                    href={client.google_drive_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-glass inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold group"
-                  >
-                    <ExternalLink className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
-                    View Google Drive
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          )}
 
           {/* Progress Section */}
           <motion.div variants={itemVariants} className="rounded-xl pt-6 pb-16 backdrop-blur-lg">
