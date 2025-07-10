@@ -20,7 +20,7 @@ export default async function MyTasksPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center text-white">
           <h1 className="text-2xl font-bold mb-4">Team member profile not found</h1>
-          <p className="text-gray-300">Please contact your administrator to set up your team profile.</p>
+          <p className="text-slate-300">Please contact your administrator to set up your team profile.</p>
         </div>
       </div>
     )
@@ -43,7 +43,7 @@ export default async function MyTasksPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-white mb-2">My Tasks</h1>
-        <p className="text-gray-300">Tasks assigned to {teamMember.name}</p>
+        <p className="text-slate-300">Tasks assigned to {teamMember.name}</p>
       </div>
       
       <MyTasksDashboard tasks={tasks || []} teamMember={teamMember} />

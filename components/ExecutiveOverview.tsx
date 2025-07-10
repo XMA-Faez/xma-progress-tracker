@@ -30,10 +30,10 @@ export function ExecutiveOverview({ clients, teamMembers, tasks }: ExecutiveOver
     <div className="space-y-6">
       {/* Key Metrics - Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-card rounded-xl border border-gray-700 p-6">
+        <div className="glass-card rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Total Projects</p>
+              <p className="text-slate-400 text-sm">Total Projects</p>
               <p className="text-3xl font-bold text-white">{clients.length}</p>
             </div>
             <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
@@ -42,10 +42,10 @@ export function ExecutiveOverview({ clients, teamMembers, tasks }: ExecutiveOver
           </div>
         </div>
 
-        <div className="glass-card rounded-xl border border-gray-700 p-6">
+        <div className="glass-card rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Total Tasks</p>
+              <p className="text-slate-400 text-sm">Total Tasks</p>
               <p className="text-3xl font-bold text-white">{tasks.length}</p>
             </div>
             <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
@@ -54,10 +54,10 @@ export function ExecutiveOverview({ clients, teamMembers, tasks }: ExecutiveOver
           </div>
         </div>
 
-        <div className="glass-card rounded-xl border border-gray-700 p-6">
+        <div className="glass-card rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Overdue Tasks</p>
+              <p className="text-slate-400 text-sm">Overdue Tasks</p>
               <p className="text-3xl font-bold text-red-400">{overdueTasks.length}</p>
             </div>
             <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center">
@@ -66,10 +66,10 @@ export function ExecutiveOverview({ clients, teamMembers, tasks }: ExecutiveOver
           </div>
         </div>
 
-        <div className="glass-card rounded-xl border border-gray-700 p-6">
+        <div className="glass-card rounded-xl border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Blocked Tasks</p>
+              <p className="text-slate-400 text-sm">Blocked Tasks</p>
               <p className="text-3xl font-bold text-yellow-400">{blockedTasks.length}</p>
             </div>
             <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
@@ -87,7 +87,7 @@ export function ExecutiveOverview({ clients, teamMembers, tasks }: ExecutiveOver
             className={`py-2 font-medium transition-colors ${
               activeTab === 'performance'
                 ? 'text-white border-b-2 border-blue-500'
-                : 'text-gray-400 hover:text-gray-300'
+                : 'text-slate-400 hover:text-slate-300'
             }`}
           >
             Team Performance
@@ -97,7 +97,7 @@ export function ExecutiveOverview({ clients, teamMembers, tasks }: ExecutiveOver
             className={`py-2 font-medium transition-colors ${
               activeTab === 'pipeline'
                 ? 'text-white border-b-2 border-blue-500'
-                : 'text-gray-400 hover:text-gray-300'
+                : 'text-slate-400 hover:text-slate-300'
             }`}
           >
             Project Pipeline

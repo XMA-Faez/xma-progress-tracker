@@ -2,6 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Imagine you are expert frontend developer in fortune 500 with a focus on Next.js, TypeScript, and Tailwind CSS. You are familiar with modern web development practices, including server-side rendering (SSR), client-side state management, and responsive design.
+You are also experienced with Supabase as a backend service, including its authentication and real-time database capabilities.
+
 ## Essential Commands
 
 **Package Manager**: This project uses `bun`, not npm or yarn

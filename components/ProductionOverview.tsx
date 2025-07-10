@@ -136,7 +136,7 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             stageFilter === "all"
               ? "bg-cyan-500 text-white"
-              : "glass-card text-gray-300 hover:bg-gray-600"
+              : "glass-card text-slate-300 hover:bg-slate-600"
           }`}
         >
           All Stages ({clients.length})
@@ -148,7 +148,7 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
             className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${
               stageFilter === stage
                 ? "bg-cyan-500 text-white"
-                : "glass-card text-gray-300 hover:bg-gray-600"
+                : "glass-card text-slate-300 hover:bg-slate-600"
             }`}
           >
             {stage} ({getClientsByStage(stage).length})
@@ -161,14 +161,14 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
         {stages.map((stage) => (
           <div
             key={stage}
-            className="glass-card rounded-xl border border-gray-700 p-4"
+            className="glass-card rounded-xl border border-slate-700 p-4"
           >
             <div className="flex items-center gap-3 mb-4">
               <div className={`w-4 h-4 rounded-full ${getStageColor(stage)}`} />
               <h3 className="text-lg font-semibold text-white capitalize">
                 {stage}
               </h3>
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-slate-400">
                 ({getClientsByStage(stage).length})
               </span>
             </div>
@@ -184,17 +184,17 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
                 return (
                   <div
                     key={client.id}
-                    className="glass-card-primary rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors"
+                    className="glass-card-primary rounded-lg p-4 border border-slate-700 hover:border-slate-600 transition-colors"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium text-white text-sm">
                         {client.name}
                       </h4>
-                      <span className="text-xs text-gray-400">{overallProgress}%</span>
+                      <span className="text-xs text-slate-400">{overallProgress}%</span>
                     </div>
 
                     {/* Overall Progress Bar */}
-                    <div className="w-full bg-gray-700 rounded-full h-2 mb-3">
+                    <div className="w-full bg-slate-700 rounded-full h-2 mb-3">
                       <div
                         className={`h-2 rounded-full transition-all duration-300 ${getStageColor(stage)}`}
                         style={{ width: `${overallProgress}%` }}
@@ -208,7 +208,7 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
                           key={task.id}
                           className="flex items-center justify-between"
                         >
-                          <span className="text-xs text-gray-300 truncate mr-2">
+                          <span className="text-xs text-slate-300 truncate mr-2">
                             {task.name}
                           </span>
                           <TaskStatusBadge
@@ -218,7 +218,7 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
                         </div>
                       ))}
                       {currentStageTasks.length > 3 && (
-                        <div className="text-xs text-gray-400 text-center">
+                        <div className="text-xs text-slate-400 text-center">
                           +{currentStageTasks.length - 3} more
                         </div>
                       )}
@@ -248,7 +248,7 @@ export function ProductionOverview({ clients }: ProductionOverviewProps) {
                       ).map((memberName) => (
                         <span
                           key={memberName}
-                          className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded"
+                          className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded"
                         >
                           {memberName}
                         </span>

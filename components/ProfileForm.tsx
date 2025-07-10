@@ -196,14 +196,14 @@ export function ProfileForm({ user, teamMember }: ProfileFormProps) {
                 <button
                   type="button"
                   onClick={clearImage}
-                  className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                  className="p-2 text-slate-400 hover:text-red-400 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
             
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-slate-400">
               Choose a square image (max 5MB). Supported formats: JPG, PNG, GIF
             </p>
           </div>
@@ -216,7 +216,7 @@ export function ProfileForm({ user, teamMember }: ProfileFormProps) {
         
         <div className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
               Display Name
             </label>
             <input
@@ -224,14 +224,14 @@ export function ProfileForm({ user, teamMember }: ProfileFormProps) {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
               placeholder="Enter your display name"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
               Email Address
             </label>
             <input
@@ -239,15 +239,15 @@ export function ProfileForm({ user, teamMember }: ProfileFormProps) {
               id="email"
               value={user.email || ''}
               disabled
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed"
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-400 cursor-not-allowed"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               Email cannot be changed. Contact admin if you need to update it.
             </p>
           </div>
 
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="role" className="block text-sm font-medium text-slate-300 mb-2">
               Role
             </label>
             <input
@@ -255,9 +255,9 @@ export function ProfileForm({ user, teamMember }: ProfileFormProps) {
               id="role"
               value={teamMember?.role || 'Team Member'}
               disabled
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed"
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-400 cursor-not-allowed"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               Role is managed by administrators.
             </p>
           </div>
@@ -269,7 +269,7 @@ export function ProfileForm({ user, teamMember }: ProfileFormProps) {
         <button
           type="submit"
           disabled={isLoading}
-          className="flex items-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+          className="flex items-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
         >
           <Save className="w-4 h-4" />
           {isLoading ? 'Saving...' : 'Save Changes'}

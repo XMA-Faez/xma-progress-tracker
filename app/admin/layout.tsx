@@ -45,16 +45,16 @@ export default async function AdminLayout({
                 </Link>
                 
                 <nav className="hidden md:flex items-center space-x-6">
-                  <Link href="/admin" className="text-gray-300 hover:text-white transition-colors">
+                  <Link href="/admin" className="text-slate-300 hover:text-white transition-colors">
                     Clients
                   </Link>
-                  <Link href="/admin/my-tasks" className="text-gray-300 hover:text-white transition-colors">
+                  <Link href="/admin/my-tasks" className="text-slate-300 hover:text-white transition-colors">
                     My Tasks
                   </Link>
-                  <Link href="/admin/team" className="text-gray-300 hover:text-white transition-colors">
+                  <Link href="/admin/team" className="text-slate-300 hover:text-white transition-colors">
                     Team
                   </Link>
-                  <Link href="/admin/overview" className="text-gray-300 hover:text-white transition-colors">
+                  <Link href="/admin/overview" className="text-slate-300 hover:text-white transition-colors">
                     Overview
                   </Link>
                 </nav>

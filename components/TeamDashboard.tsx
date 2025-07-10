@@ -68,7 +68,7 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
 
   const getStatusColor = (status: TaskStatus) => {
     const colors = {
-      'not_started': 'bg-gray-500',
+      'not_started': 'bg-slate-500',
       'in_progress': 'bg-blue-500',
       'waiting_for_client': 'bg-yellow-500',
       'waiting_for_team': 'bg-orange-500',
@@ -77,9 +77,9 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
       'client_review': 'bg-indigo-500',
       'revision_needed': 'bg-pink-500',
       'completed': 'bg-green-500',
-      'on_hold': 'bg-gray-400'
+      'on_hold': 'bg-slate-400'
     }
-    return colors[status] || 'bg-gray-500'
+    return colors[status] || 'bg-slate-500'
   }
 
   if (loading) {
@@ -95,7 +95,7 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             selectedMember === null
               ? 'bg-cyan-600 text-white'
-              : 'glass-card text-gray-300 hover:bg-gray-600'
+              : 'glass-card text-slate-300 hover:bg-slate-600'
           }`}
         >
           All Team
@@ -107,7 +107,7 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedMember === member.id
                 ? 'bg-cyan-600 text-white'
-                : 'glass-card text-gray-300 hover:bg-gray-600'
+                : 'glass-card text-slate-300 hover:bg-slate-600'
             }`}
           >
             {member.name}
@@ -130,15 +130,15 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
             }, {} as Record<TaskStatus, number>)
 
             return (
-              <div key={member.id} className="glass-card backdrop-blur-sm rounded-xl border border-gray-700 p-6">
+              <div key={member.id} className="glass-card backdrop-blur-sm rounded-xl border border-slate-700 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-xl font-semibold text-white">{member.name}</h3>
-                    <p className="text-gray-400 text-sm">{member.role}</p>
+                    <p className="text-slate-400 text-sm">{member.role}</p>
                   </div>
                   <div className="text-right">
                     <div className="text-2xl font-bold text-white">{memberTasks.length}</div>
-                    <div className="text-gray-400 text-sm">tasks</div>
+                    <div className="text-slate-400 text-sm">tasks</div>
                   </div>
                 </div>
 
@@ -147,7 +147,7 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
                   {Object.entries(statusCounts).map(([status, count]) => (
                     <div key={status} className="flex items-center gap-1">
                       <div className={`w-3 h-3 rounded-full ${getStatusColor(status as TaskStatus)}`} />
-                      <span className="text-xs text-gray-300">{count}</span>
+                      <span className="text-xs text-slate-300">{count}</span>
                     </div>
                   ))}
                 </div>
@@ -163,7 +163,7 @@ export function TeamDashboard({ teamMembers }: TeamDashboardProps) {
                     />
                   ))}
                   {memberTasks.length > 5 && (
-                    <div className="text-center text-gray-400 text-sm">
+                    <div className="text-center text-slate-400 text-sm">
                       +{memberTasks.length - 5} more tasks
                     </div>
                   )}

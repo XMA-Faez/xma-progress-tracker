@@ -57,18 +57,18 @@ export function MultiTeamSelect({ teamMembers, selectedIds, onChange, className 
       </button>
 
       {isOpen && (
-        <div className="absolute top-full mt-1 w-full bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50 max-h-64 overflow-y-auto">
+        <div className="absolute top-full mt-1 w-full bg-slate-800 rounded-lg shadow-xl border border-slate-700 z-50 max-h-64 overflow-y-auto">
           <div className="p-1">
             {selectedIds.length > 0 && (
               <>
                 <button
                   onClick={() => onChange([])}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-gray-700 transition-colors flex items-center gap-2 text-gray-300"
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-slate-700 transition-colors flex items-center gap-2 text-slate-300"
                 >
                   <X className="h-3 w-3" />
                   Clear all
                 </button>
-                <div className="h-px bg-gray-700 my-1" />
+                <div className="h-px bg-slate-700 my-1" />
               </>
             )}
             
@@ -78,8 +78,8 @@ export function MultiTeamSelect({ teamMembers, selectedIds, onChange, className 
                 <button
                   key={member.id}
                   onClick={() => toggleMember(member.id)}
-                  className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-700 transition-colors flex items-center justify-between ${
-                    isSelected ? 'text-white bg-gray-700/50' : 'text-gray-300'
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-slate-700 transition-colors flex items-center justify-between ${
+                    isSelected ? 'text-white bg-slate-700/50' : 'text-slate-300'
                   }`}
                 >
                   <span>{member.name}</span>

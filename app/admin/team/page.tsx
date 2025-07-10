@@ -16,7 +16,7 @@ export default async function TeamPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-white mb-2">Team Dashboard</h1>
-        <p className="text-gray-300">Track what everyone is working on across all projects</p>
+        <p className="text-slate-300">Track what everyone is working on across all projects</p>
       </div>
       
       <TeamDashboard teamMembers={teamMembers as TeamMember[] || []} />

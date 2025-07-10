@@ -57,8 +57,8 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
-          <p className="text-gray-400 text-sm">Total Tasks</p>
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 p-6">
+          <p className="text-slate-400 text-sm">Total Tasks</p>
           <p className="text-3xl font-bold text-white">{tasks.length}</p>
         </div>
         <div className="bg-blue-500/20 backdrop-blur-sm rounded-xl border border-blue-500/30 p-6">
@@ -82,7 +82,7 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'all'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           All ({tasks.length})
@@ -92,7 +92,7 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'in_progress'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           In Progress ({statusCounts['in_progress'] || 0})
@@ -102,7 +102,7 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'waiting_for_client'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           Waiting for Client ({statusCounts['waiting_for_client'] || 0})
@@ -112,7 +112,7 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'blocked'
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
         >
           Blocked ({statusCounts['blocked'] || 0})
@@ -122,23 +122,23 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
       {/* Tasks List */}
       <div className="space-y-4">
         {filteredTasks.length === 0 ? (
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-8 text-center">
-            <p className="text-gray-400">No tasks found with this filter</p>
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 p-8 text-center">
+            <p className="text-slate-400">No tasks found with this filter</p>
           </div>
         ) : (
           filteredTasks.map(task => (
-            <div key={task.id} className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
+            <div key={task.id} className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-lg font-medium text-white">{task.name}</h3>
                     <TaskStatusBadge status={task.status} />
                   </div>
-                  <div className="text-sm text-gray-400 space-y-1">
+                  <div className="text-sm text-slate-400 space-y-1">
                     <p>Client: {task.clients?.name}</p>
                     <p>Stage: {task.stage} • Touchpoint: #{task.touchpoint}</p>
                     {task.description && (
-                      <p className="text-gray-300 mt-2">{task.description}</p>
+                      <p className="text-slate-300 mt-2">{task.description}</p>
                     )}
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
                 <select
                   value={task.status}
                   onChange={(e) => updateTaskStatus(task.id, e.target.value as TaskStatus)}
-                  className="ml-4 bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 text-sm"
+                  className="ml-4 bg-slate-700 text-white border border-slate-600 rounded px-3 py-2 text-sm"
                 >
                   <option value="not_started">Not Started</option>
                   <option value="in_progress">In Progress</option>

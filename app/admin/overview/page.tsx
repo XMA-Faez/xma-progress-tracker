@@ -49,7 +49,7 @@ export default async function OverviewPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-white mb-2">Executive Overview</h1>
-        <p className="text-gray-300">Complete overview of team performance and project progress</p>
+        <p className="text-slate-300">Complete overview of team performance and project progress</p>
       </div>
       
       <ExecutiveOverview 

@@ -105,7 +105,7 @@ export function TeamPerformance({ clients, teamMembers, tasks }: TeamPerformance
       'medium': 'bg-yellow-500',
       'low': 'bg-green-500'
     }
-    return colors[workload as keyof typeof colors] || 'bg-gray-500'
+    return colors[workload as keyof typeof colors] || 'bg-slate-500'
   }
 
   const stageDistribution = getClientsByStage()
@@ -127,26 +127,26 @@ export function TeamPerformance({ clients, teamMembers, tasks }: TeamPerformance
           ).length
 
           return (
-            <div key={member.id} className="flex items-center justify-between py-4 border-b border-gray-700/30">
+            <div key={member.id} className="flex items-center justify-between py-4 border-b border-slate-700/30">
                 <div className="flex items-center gap-4">
                   <div>
                     <h3 className="font-medium text-white">{member.name}</h3>
-                    <p className="text-sm text-gray-400">{member.role}</p>
+                    <p className="text-sm text-slate-400">{member.role}</p>
                   </div>
                   <div className={`w-3 h-3 rounded-full ${getWorkloadColor(workload)}`} title={`${workload} workload`} />
                 </div>
                 
                 <div className="flex items-center gap-6">
                   <div className="text-center">
-                    <div className="text-sm text-gray-400">Active</div>
+                    <div className="text-sm text-slate-400">Active</div>
                     <div className="text-lg font-semibold text-white">{activeTasks}</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm text-gray-400">Total</div>
+                    <div className="text-sm text-slate-400">Total</div>
                     <div className="text-lg font-semibold text-white">{memberTasks.length}</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm text-gray-400">Completion</div>
+                    <div className="text-sm text-slate-400">Completion</div>
                     <div className="text-lg font-semibold text-white">{completionRate}%</div>
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export function TeamPerformance({ clients, teamMembers, tasks }: TeamPerformance
                     <div key={task.id} className="flex items-center justify-between py-3 border-l-2 border-red-500 pl-4">
                       <div>
                         <div className="font-medium text-white">{task.name}</div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-slate-400">
                           {task.clients?.name} • {task.team_members?.name}
                         </div>
                       </div>
@@ -189,7 +189,7 @@ export function TeamPerformance({ clients, teamMembers, tasks }: TeamPerformance
                     <div key={task.id} className="flex items-center justify-between py-3 border-l-2 border-yellow-500 pl-4">
                       <div>
                         <div className="font-medium text-white">{task.name}</div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-slate-400">
                           {task.clients?.name} • {task.team_members?.name}
                         </div>
                       </div>

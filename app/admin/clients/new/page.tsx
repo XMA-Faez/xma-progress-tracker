@@ -84,7 +84,7 @@ export default function NewClientPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <Link href="/admin" className="inline-flex items-center text-sm text-gray-400 hover:text-white">
+      <Link href="/admin" className="inline-flex items-center text-sm text-slate-400 hover:text-white">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
       </Link>
 

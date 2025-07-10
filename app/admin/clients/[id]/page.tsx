@@ -629,7 +629,7 @@ export default function ManageClientPage({
                               <SelectContent>
                                 <SelectItem value="not_started">
                                   <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-gray-500" />
+                                    <div className="w-2 h-2 rounded-full bg-slate-500" />
                                     Not Started
                                   </div>
                                 </SelectItem>
@@ -683,7 +683,7 @@ export default function ManageClientPage({
                                 </SelectItem>
                                 <SelectItem value="on_hold">
                                   <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-gray-400" />
+                                    <div className="w-2 h-2 rounded-full bg-slate-400" />
                                     On Hold
                                   </div>
                                 </SelectItem>
