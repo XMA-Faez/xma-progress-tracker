@@ -93,7 +93,7 @@ export default function AdminDashboardContent({ clients }: AdminDashboardContent
             <motion.div
               key={client.id} 
               variants={itemVariants}
-              className="glass-card rounded-xl p-6 hover:glass-card-active transition-all duration-300 group"
+              className="glass-card rounded-xl p-6 hover:glass-card-active group"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between">

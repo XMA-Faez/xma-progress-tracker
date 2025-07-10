@@ -57,7 +57,8 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder
      * - client pages (public access)
+     * - auth callback (for invitation links)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|client/).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|client/|auth/).*)',
   ],
 }

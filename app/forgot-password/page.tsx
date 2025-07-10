@@ -1,42 +1,73 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const [success, setSuccess] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/update-password`,
       });
 
       if (error) throw error;
 
-      router.push("/admin");
-      router.refresh();
+      setSuccess(true);
     } catch (error: any) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  if (success) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-4 relative" data-admin-page>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="glass-card rounded-xl p-8 w-full max-w-md backdrop-blur-lg relative z-10 text-center"
+        >
+          <div className="space-y-4">
+            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto">
+              <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold">Check your email</h2>
+            <p className="text-muted-foreground">
+              We've sent a password reset link to <span className="font-semibold">{email}</span>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Click the link in the email to reset your password.
+            </p>
+            <div className="pt-4">
+              <Link href="/login">
+                <Button className="btn-glass w-full">
+                  Back to Login
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4 relative" data-admin-page>
@@ -53,15 +84,14 @@ export default function LoginPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-center space-y-2"
           >
-            <h1 className="text-3xl font-bold gradient-text">XMA Progress</h1>
-            <h2 className="text-xl font-semibold">Admin Login</h2>
+            <h1 className="text-3xl font-bold gradient-text">Reset Password</h1>
             <p className="text-muted-foreground text-sm">
-              Enter your credentials to access the admin dashboard
+              Enter your email address and we'll send you a link to reset your password
             </p>
           </motion.div>
           
           <motion.form 
-            onSubmit={handleLogin} 
+            onSubmit={handleResetPassword} 
             className="space-y-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -69,7 +99,7 @@ export default function LoginPage() {
           >
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-semibold tracking-wide">
-                Email
+                Email Address
               </label>
               <Input
                 id="email"
@@ -77,20 +107,6 @@ export default function LoginPage() {
                 placeholder="admin@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="form-input rounded-lg h-12"
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-semibold tracking-wide">
-                Password
-              </label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 className="form-input rounded-lg h-12"
                 required
               />
@@ -114,30 +130,24 @@ export default function LoginPage() {
               {loading ? (
                 <span className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                  Signing in...
+                  Sending...
                 </span>
               ) : (
-                "Sign In"
+                "Send Reset Link"
               )}
             </Button>
           </motion.form>
-          
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-center"
-          >
+
+          <div className="text-center">
             <Link 
-              href="/forgot-password" 
+              href="/login" 
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Forgot your password?
+              Remember your password? <span className="font-semibold">Sign in</span>
             </Link>
-          </motion.div>
+          </div>
         </div>
       </motion.div>
     </div>
   );
 }
-

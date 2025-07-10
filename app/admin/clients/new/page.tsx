@@ -43,15 +43,34 @@ export default function NewClientPage() {
 
       if (clientError) throw clientError
 
-      // Create default tasks for the client
-      const clientTasks = defaultTasks.map(task => ({
-        ...task,
-        client_id: client.id,
-      }))
+      // Get assignment rules
+      const { data: assignmentRules } = await supabase
+        .from('assignment_rules')
+        .select('*')
+
+      // Create tasks with assignments using the defaultTasks template
+      const tasksWithAssignments = defaultTasks.map(task => {
+        // Find matching assignment rule
+        const rule = assignmentRules?.find(r => 
+          r.task_name === task.name && 
+          r.task_type === task.type && 
+          r.stage === task.stage
+        )
+        
+        return {
+          ...task,
+          client_id: client.id,
+          assigned_to: rule?.assigned_to || null,
+          status: 'not_started' as const,
+          priority: 'medium' as const,
+          due_date: null,
+          notes: null
+        }
+      })
 
       const { error: tasksError } = await supabase
         .from('client_tasks')
-        .insert(clientTasks)
+        .insert(tasksWithAssignments)
 
       if (tasksError) throw tasksError
 

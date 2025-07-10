@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
@@ -23,11 +22,26 @@ import {
   Briefcase,
   Edit3,
   ExternalLink,
-  Check,
   StickyNote,
   Save,
 } from "lucide-react";
-import { Client, ClientTask, Stage, TaskType } from "@/types";
+import { Client, ClientTask, Stage, TaskType, TaskStatus, TeamMember } from "@/types";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { MultiTeamSelect } from "@/components/MultiTeamSelect";
 
 const stageOrder: Stage[] = [
   "onboarding",
@@ -69,6 +83,7 @@ export default function ManageClientPage({
   const [notes, setNotes] = useState("");
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [notesSaving, setNotesSaving] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   useEffect(() => {
     const getParams = async () => {
@@ -81,8 +96,25 @@ export default function ManageClientPage({
   useEffect(() => {
     if (clientId) {
       fetchClientAndTasks();
+      fetchTeamMembers();
     }
   }, [clientId]);
+
+  const fetchTeamMembers = async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('team_members')
+        .select('*')
+        .eq('active', true)
+        .order('name');
+      
+      if (error) throw error;
+      setTeamMembers(data || []);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+    }
+  };
 
   const fetchClientAndTasks = async () => {
     try {
@@ -103,10 +135,17 @@ export default function ManageClientPage({
       });
       setNotes(clientData.notes || "");
 
-      // Fetch tasks
+      // Fetch tasks with team member info
       const { data: tasksData, error: tasksError } = await supabase
         .from("client_tasks")
-        .select("*")
+        .select(`
+          *,
+          team_members (name, role),
+          task_assignments (
+            team_member_id,
+            team_members (id, name, role)
+          )
+        `)
         .eq("client_id", clientId)
         .order("order_index", { ascending: true });
 
@@ -119,14 +158,15 @@ export default function ManageClientPage({
     }
   };
 
-  const handleToggleTask = async (taskId: string, completed: boolean) => {
+  const handleUpdateTaskStatus = async (taskId: string, newStatus: TaskStatus) => {
     try {
       const supabase = createClient();
       const { error } = await supabase
         .from("client_tasks")
         .update({
-          completed,
-          completed_at: completed ? new Date().toISOString() : null,
+          status: newStatus,
+          completed: newStatus === 'completed',
+          completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
         })
         .eq("id", taskId);
 
@@ -137,14 +177,60 @@ export default function ManageClientPage({
           task.id === taskId
             ? {
                 ...task,
-                completed,
-                completed_at: completed ? new Date().toISOString() : null,
+                status: newStatus,
+                completed: newStatus === 'completed',
+                completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
               }
             : task,
         ),
       );
     } catch (error) {
       console.error("Error updating task:", error);
+    }
+  };
+
+  const handleAssignTask = async (taskId: string, selectedIds: string[]) => {
+    try {
+      const supabase = createClient();
+      
+      // First, delete existing assignments
+      await supabase
+        .from("task_assignments")
+        .delete()
+        .eq("task_id", taskId);
+      
+      // Then, insert new assignments
+      if (selectedIds.length > 0) {
+        const assignments = selectedIds.map(memberId => ({
+          task_id: taskId,
+          team_member_id: memberId
+        }));
+        
+        const { error } = await supabase
+          .from("task_assignments")
+          .insert(assignments);
+        
+        if (error) throw error;
+      }
+      
+      // Update local state
+      const newAssignments = selectedIds.map(id => ({
+        team_member_id: id,
+        team_members: teamMembers.find(m => m.id === id)
+      }));
+      
+      setTasks(
+        tasks.map((task) =>
+          task.id === taskId
+            ? {
+                ...task,
+                task_assignments: newAssignments,
+              }
+            : task,
+        ),
+      );
+    } catch (error) {
+      console.error("Error assigning task:", error);
     }
   };
 
@@ -189,6 +275,8 @@ export default function ManageClientPage({
         touchpoint: nextTouchpoint,
         order_index: maxOrder + 1,
         completed: false,
+        status: 'not_started',
+        priority: 'medium',
       });
 
       if (error) throw error;
@@ -471,103 +559,172 @@ export default function ManageClientPage({
           </div>
         </motion.div>
 
-        {/* Minimal Tasks by Stage */}
-        <div className="space-y-6">
-          {stageOrder.map((stage, stageIndex) => (
+        {/* Tasks by Stage - Table Format */}
+        <div className="space-y-8">
+          {stageOrder.map((stage) => (
             <motion.div 
               key={stage} 
               variants={itemVariants}
-              className="space-y-3"
+              className="space-y-4"
             >
-              <div className="flex items-center gap-3 pb-3 border-b border-border/20">
+              <div className="flex items-center gap-3">
                 <div className="w-1 h-6 bg-accent rounded-full" />
                 <h3 className="text-lg font-semibold text-foreground">{stageLabels[stage]}</h3>
                 <div className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-md">
-                  {tasksByStage[stage]?.filter(t => t.completed).length || 0} / {tasksByStage[stage]?.length || 0}
+                  {tasksByStage[stage]?.filter(t => t.status === 'completed').length || 0} / {tasksByStage[stage]?.length || 0}
                 </div>
               </div>
               
-              <div className="space-y-0.5">
-                {tasksByStage[stage]?.map((task, taskIndex) => (
-                  <motion.div
-                    key={task.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      duration: 0.4, 
-                      delay: (stageIndex * 0.1) + (taskIndex * 0.05),
-                      ease: "easeOut"
-                    }}
-                    className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-all duration-200 group hover:bg-secondary/20 ${
-                      task.completed ? 'opacity-60' : ''
-                    }`}
-                  >
-                    <button
-                      onClick={() => handleToggleTask(task.id, !task.completed)}
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-                        task.completed 
-                          ? 'border-green-500 bg-green-500' 
-                          : 'border-slate-700 group-hover:border-accent/50'
-                      }`}
-                    >
-                      {task.completed && (
-                        <Check className="w-3 h-3 text-white" />
-                      )}
-                    </button>
-                    
-                    <div className={`p-1.5 rounded-md transition-all duration-200 ${getTaskColor(task.type)} ${
-                      task.completed ? 'opacity-50' : ''
-                    }`}>
-                      {getTaskIcon(task.type)}
-                    </div>
-                    
-                    <span
-                      className={`flex-1 transition-all duration-200 ${
-                        task.completed 
-                          ? 'text-muted-foreground line-through' 
-                          : 'text-foreground'
-                      }`}
-                    >
-                      {task.name}
-                    </span>
-                    
-                    <span className="text-xs text-muted-foreground font-medium">
-                      #{task.touchpoint}
-                    </span>
-
-                    {/* Admin Action Buttons */}
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <button
-                        onClick={() => openInfoModal(task)}
-                        className="p-1.5 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
-                        title="View Info"
-                      >
-                        <Info className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        onClick={() => openEditModal(task)}
-                        className="p-1.5 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
-                        title="Edit Task"
-                      >
-                        <Edit className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTask(task.id)}
-                        className="p-1.5 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
-                        title="Delete Task"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-                
-                {(!tasksByStage[stage] || tasksByStage[stage].length === 0) && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p className="text-sm">No tasks in this stage yet</p>
-                  </div>
-                )}
-              </div>
+              {tasksByStage[stage] && tasksByStage[stage].length > 0 ? (
+                <div className="glass-card rounded-xl overflow-hidden backdrop-blur-lg">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-b border-border/20">
+                        <TableHead className="w-[50px] text-center">TP</TableHead>
+                        <TableHead className="w-[80px]">Type</TableHead>
+                        <TableHead>Task Name</TableHead>
+                        <TableHead className="w-[150px]">Assigned To</TableHead>
+                        <TableHead className="w-[200px]">Status</TableHead>
+                        <TableHead className="w-[120px] text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {tasksByStage[stage].map((task) => (
+                        <TableRow 
+                          key={task.id}
+                          className="border-b border-border/10 hover:bg-secondary/10 transition-colors"
+                        >
+                          <TableCell className="text-center">
+                            <span className="text-sm font-medium text-muted-foreground">
+                              #{task.touchpoint}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <div className={`inline-flex items-center gap-2 ${getTaskColor(task.type)}`}>
+                              {getTaskIcon(task.type)}
+                              <span className="text-xs capitalize">{task.type}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className={task.completed ? 'text-muted-foreground line-through' : 'text-foreground'}>
+                              {task.name}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <MultiTeamSelect
+                              teamMembers={teamMembers}
+                              selectedIds={task.task_assignments?.map(a => a.team_member_id) || []}
+                              onChange={(selectedIds) => handleAssignTask(task.id, selectedIds)}
+                              className="w-[140px]"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={task.status || "not_started"}
+                              onValueChange={(value) => handleUpdateTaskStatus(task.id, value as TaskStatus)}
+                            >
+                              <SelectTrigger className="w-[180px] h-9 glass-card">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="not_started">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-gray-500" />
+                                    Not Started
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="in_progress">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                                    In Progress
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="waiting_for_client">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                                    Waiting for Client
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="waiting_for_team">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-orange-500" />
+                                    Waiting for Team
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="blocked">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-red-500" />
+                                    Blocked
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="review_required">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-purple-500" />
+                                    Review Required
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="client_review">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                                    Client Review
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="revision_needed">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-pink-500" />
+                                    Revision Needed
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="completed">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                                    Completed
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="on_hold">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-gray-400" />
+                                    On Hold
+                                  </div>
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center justify-center gap-1">
+                              <button
+                                onClick={() => openInfoModal(task)}
+                                className="p-1.5 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
+                                title="View Info"
+                              >
+                                <Info className="h-3.5 w-3.5" />
+                              </button>
+                              <button
+                                onClick={() => openEditModal(task)}
+                                className="p-1.5 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
+                                title="Edit Task"
+                              >
+                                <Edit className="h-3.5 w-3.5" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteTask(task.id)}
+                                className="p-1.5 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                                title="Delete Task"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : (
+                <div className="glass-card rounded-xl p-8 text-center text-muted-foreground backdrop-blur-lg">
+                  <p className="text-sm">No tasks in this stage yet</p>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>

@@ -180,7 +180,18 @@ body {
   }
 }
 
-/* Glass Card Components */
+/* Glass Card Components - 3 Hierarchy Levels */
+
+/* Primary Glass Card - Highest hierarchy, most prominent */
+.glass-card-primary {
+  backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, 
+    oklch(0.22 0.03 265 / 80%) 0%, 
+    oklch(0.20 0.025 270 / 60%) 100%);
+  border: 1px solid oklch(0.65 0.18 195 / 40%);
+}
+
+/* Default Glass Card - Standard hierarchy */
 .glass-card {
   backdrop-filter: blur(16px);
   background: linear-gradient(135deg, 
@@ -188,7 +199,46 @@ body {
     oklch(0.16 0.02 270 / 40%) 100%);
   border: 1px solid oklch(0.65 0.18 195 / 30%);
   box-shadow: 0 25px 50px -12px oklch(0.65 0.18 195 / 5%);
-  position: relative;
+}
+
+/* Secondary Glass Card - Lower hierarchy, more subtle */
+.glass-card-secondary {
+  backdrop-filter: blur(12px);
+  background: linear-gradient(135deg, 
+    oklch(0.16 0.02 265 / 40%) 0%, 
+    oklch(0.14 0.015 270 / 30%) 100%);
+  border: 1px solid oklch(0.65 0.18 195 / 20%);
+  box-shadow: 0 10px 25px -5px oklch(0.65 0.18 195 / 3%);
+}
+
+/* Select Component Glass Styling */
+[data-radix-popper-content-wrapper] {
+  z-index: 50;
+}
+
+[role="listbox"] {
+  backdrop-filter: blur(16px) !important;
+  background: linear-gradient(135deg, 
+    oklch(0.18 0.025 265 / 95%) 0%, 
+    oklch(0.16 0.02 270 / 90%) 100%) !important;
+  border: 1px solid oklch(0.65 0.18 195 / 30%) !important;
+  box-shadow: 0 25px 50px -12px oklch(0.65 0.18 195 / 10%) !important;
+}
+
+/* Pseudo-element effects for glass cards */
+.glass-card-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.18 195 / 10%) 0%, 
+    transparent 50%, 
+    oklch(0.65 0.18 240 / 6%) 100%);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .glass-card::before {
@@ -202,6 +252,21 @@ body {
     oklch(0.65 0.18 195 / 5%) 0%, 
     transparent 50%, 
     oklch(0.65 0.18 240 / 3%) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.glass-card-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.18 195 / 3%) 0%, 
+    transparent 50%, 
+    oklch(0.65 0.18 240 / 2%) 100%);
   border-radius: inherit;
   pointer-events: none;
 }
