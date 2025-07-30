@@ -65,6 +65,7 @@ export default function ManageClientPage({
   const [client, setClient] = useState<Client | null>(null);
   const [tasks, setTasks] = useState<ClientTask[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingAssignments, setLoadingAssignments] = useState<Set<string>>(new Set());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -190,6 +191,29 @@ export default function ManageClientPage({
   };
 
   const handleAssignTask = async (taskId: string, selectedIds: string[]) => {
+    // Add to loading state
+    setLoadingAssignments(prev => new Set(prev).add(taskId));
+    
+    // Store previous state for rollback
+    const previousTasks = [...tasks];
+    
+    // Optimistic update - update UI immediately
+    const newAssignments = selectedIds.map(id => ({
+      team_member_id: id,
+      team_members: teamMembers.find(m => m.id === id)
+    }));
+    
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              task_assignments: newAssignments,
+            }
+          : task,
+      ),
+    );
+    
     try {
       const supabase = createClient();
       
@@ -212,25 +236,20 @@ export default function ManageClientPage({
         
         if (error) throw error;
       }
-      
-      // Update local state
-      const newAssignments = selectedIds.map(id => ({
-        team_member_id: id,
-        team_members: teamMembers.find(m => m.id === id)
-      }));
-      
-      setTasks(
-        tasks.map((task) =>
-          task.id === taskId
-            ? {
-                ...task,
-                task_assignments: newAssignments,
-              }
-            : task,
-        ),
-      );
     } catch (error) {
       console.error("Error assigning task:", error);
+      // Rollback on error
+      setTasks(previousTasks);
+      
+      // Show error message to user (you can add a toast notification here)
+      alert('Failed to update assignment. Please try again.');
+    } finally {
+      // Remove from loading state
+      setLoadingAssignments(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(taskId);
+        return newSet;
+      });
     }
   };
 
@@ -576,7 +595,7 @@ export default function ManageClientPage({
               </div>
               
               {tasksByStage[stage] && tasksByStage[stage].length > 0 ? (
-                <div className="glass-card rounded-xl overflow-hidden backdrop-blur-lg">
+                <div className="glass-card rounded-xl backdrop-blur-lg relative">
                   <Table>
                     <TableHeader>
                       <TableRow className="border-b border-border/20">
@@ -616,6 +635,7 @@ export default function ManageClientPage({
                               selectedIds={task.task_assignments?.map(a => a.team_member_id) || []}
                               onChange={(selectedIds) => handleAssignTask(task.id, selectedIds)}
                               className="w-[140px]"
+                              disabled={loadingAssignments.has(task.id)}
                             />
                           </TableCell>
                           <TableCell>
