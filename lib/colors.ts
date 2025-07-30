@@ -123,4 +123,23 @@ export function createTeamColorMap(teamMembers: Array<{id: string, color_index?:
   return colorMap
 }
 
+/**
+ * Get hex color value for inline styles
+ */
+export function getColorHex(colorName: string): string {
+  const colorMap: Record<string, string> = {
+    'Red': '#ef4444',
+    'Blue': '#3b82f6', 
+    'Green': '#22c55e',
+    'Purple': '#a855f7',
+    'Orange': '#f97316',
+    'Cyan': '#06b6d4',
+    'Pink': '#ec4899',
+    'Teal': '#14b8a6',
+    'Amber': '#f59e0b',
+    'Emerald': '#10b981'
+  }
+  return colorMap[colorName] || '#64748b'
+}
+
 export type { ColorScheme }

@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { TeamMember, Client } from "@/types";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { ColorScheme } from "@/lib/colors";
+import { ColorScheme, getColorHex } from "@/lib/colors";
 import { AssignedMemberAvatar } from "@/components/AssignedMemberAvatar";
 
 interface ClientCardProps {
@@ -30,6 +30,9 @@ export function ClientCard({ client, isDragging = false, colorMap }: ClientCardP
     },
   });
 
+  // Get color scheme for the assigned team member
+  const memberColor = client.assigned_member && colorMap?.get(client.assigned_member.id);
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -39,17 +42,27 @@ export function ClientCard({ client, isDragging = false, colorMap }: ClientCardP
   return (
     <div
       ref={setNodeRef}
-      style={style}
+      style={{
+        ...style,
+        borderLeftColor: memberColor ? getColorHex(memberColor.name) : undefined,
+        backgroundColor: memberColor ? `${getColorHex(memberColor.name)}15` : undefined,
+      }}
       {...attributes}
       {...listeners}
-      className={`glass-card rounded-lg p-3 hover:shadow-md group cursor-grab active:cursor-grabbing border border-border/30 hover:border-border/50 transition-all duration-200 ${
+      className={`glass-card rounded-lg p-3 hover:shadow-md group cursor-grab active:cursor-grabbing border-l-4 border-r border-t border-b transition-all duration-200 ${
         isDragging ? "rotate-1 scale-105 shadow-lg" : ""
+      } ${
+        memberColor 
+          ? "border-r-border/30 border-t-border/30 border-b-border/30"
+          : "border-border/30 hover:border-border/50"
       }`}
     >
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-medium truncate text-foreground group-hover:text-accent transition-colors duration-200">
+            <h3 className={`text-sm font-medium truncate text-foreground transition-colors duration-200 ${
+              memberColor ? `group-hover:${memberColor.text}` : "group-hover:text-accent"
+            }`}>
               {client.name}
             </h3>
             <div className="space-y-0.5 mt-0.5">

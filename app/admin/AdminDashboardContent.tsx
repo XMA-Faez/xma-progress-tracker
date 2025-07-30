@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Plus, ExternalLink, FolderOpen, Search, Pin, Grid, Columns, Users, Check, User, Palette } from 'lucide-react'
 import ClientKanbanView from '@/components/ClientKanbanView'
 import { createClient } from '@/lib/supabase'
-import { createTeamColorMap } from '@/lib/colors'
+import { createTeamColorMap, getColorHex } from '@/lib/colors'
 import { AssignedMemberAvatar } from '@/components/AssignedMemberAvatar'
 
 interface Client {
@@ -387,12 +387,24 @@ export default function AdminDashboardContent({ clients: initialClients, pinnedC
             <motion.div
               key={client.id} 
               variants={itemVariants}
-              className="glass-card rounded-xl p-6 hover:glass-card-active group"
+              className="glass-card rounded-xl p-6 hover:glass-card-active group border-l-4"
+              style={{
+                borderLeftColor: client.assigned_member && teamColorMap.get(client.assigned_member.id) 
+                  ? getColorHex(teamColorMap.get(client.assigned_member.id)!.name) 
+                  : '#64748b',
+                backgroundColor: client.assigned_member && teamColorMap.get(client.assigned_member.id)
+                  ? `${getColorHex(teamColorMap.get(client.assigned_member.id)!.name)}15`
+                  : undefined
+              }}
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1 flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold truncate group-hover:gradient-text transition-all duration-300">
+                    <h3 className={`text-lg font-semibold truncate transition-all duration-300 ${
+                      client.assigned_member && teamColorMap.get(client.assigned_member.id)
+                        ? `group-hover:${teamColorMap.get(client.assigned_member.id)!.text}`
+                        : "group-hover:gradient-text"
+                    }`}>
                       {client.name}
                     </h3>
                     <div className="flex items-center gap-2">

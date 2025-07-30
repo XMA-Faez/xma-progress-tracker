@@ -10,7 +10,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { TeamMember, Client } from "@/types";
 import { User, GripVertical } from "lucide-react";
 import { ClientCard } from "./ClientCard";
-import { ColorScheme } from "@/lib/colors";
+import { ColorScheme, getColorHex } from "@/lib/colors";
 
 interface KanbanColumnProps {
   id: string;
@@ -66,17 +66,19 @@ export function KanbanColumn({
     <div ref={setNodeRef} style={style} className="flex-shrink-0 w-80">
       <div
         ref={setDroppableRef}
-        className={`glass-card rounded-xl p-4 h-full transition-all duration-200 ${
+        className={`glass-card rounded-xl p-4 h-full transition-all duration-200 border-l-4 ${
           shouldHighlight
             ? "ring-2 ring-accent ring-opacity-50 bg-accent/5 scale-[1.02] shadow-lg"
             : isOverColumn && activeType === "column"
               ? colorScheme 
-                ? `ring-2 ${colorScheme.border} ring-opacity-50 ${colorScheme.bg}/50`
+                ? `ring-2 ring-opacity-50`
                 : "ring-2 ring-blue-500 ring-opacity-50 bg-blue-500/5"
-              : colorScheme
-                ? `border-t-2 ${colorScheme.border}`
-                : ""
+              : ""
         }`}
+        style={{
+          borderLeftColor: colorScheme ? getColorHex(colorScheme.name) : '#64748b',
+          backgroundColor: colorScheme ? `${getColorHex(colorScheme.name)}15` : undefined,
+        }}
       >
         <div
           {...attributes}
