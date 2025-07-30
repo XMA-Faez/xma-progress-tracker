@@ -15,6 +15,7 @@ export default function NewClientPage() {
   const [name, setName] = useState('')
   const [frameLink, setFrameLink] = useState('')
   const [googleDriveLink, setGoogleDriveLink] = useState('')
+  const [launchDate, setLaunchDate] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -37,6 +38,7 @@ export default function NewClientPage() {
           unique_link: uniqueLink,
           frame_link: frameLink || null,
           google_drive_link: googleDriveLink || null,
+          launch_date: launchDate || null,
         })
         .select()
         .single()
@@ -133,6 +135,18 @@ export default function NewClientPage() {
                 placeholder="https://drive.google.com/..."
                 value={googleDriveLink}
                 onChange={(e) => setGoogleDriveLink(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="launchDate" className="text-sm font-medium">
+                Launch Date (Optional)
+              </label>
+              <Input
+                id="launchDate"
+                type="date"
+                value={launchDate}
+                onChange={(e) => setLaunchDate(e.target.value)}
               />
             </div>
 

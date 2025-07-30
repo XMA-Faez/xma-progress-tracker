@@ -18,8 +18,8 @@ import {
   horizontalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
-import { TeamMember } from "@/types";
-import { ClientCard, Client } from "./kanban/ClientCard";
+import { TeamMember, Client } from "@/types";
+import { ClientCard } from "./kanban/ClientCard";
 import { KanbanColumn } from "./kanban/KanbanColumn";
 import { getUniqueColorsForTeam } from "@/lib/colors";
 

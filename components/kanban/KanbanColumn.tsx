@@ -7,9 +7,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { TeamMember } from "@/types";
+import { TeamMember, Client } from "@/types";
 import { User, GripVertical } from "lucide-react";
-import { ClientCard, Client } from "./ClientCard";
+import { ClientCard } from "./ClientCard";
 import { getPersonColor, ColorScheme } from "@/lib/colors";
 
 interface KanbanColumnProps {

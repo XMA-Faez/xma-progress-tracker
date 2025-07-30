@@ -15,8 +15,11 @@ interface Client {
   name: string
   frame_link?: string
   google_drive_link?: string
+  launch_date?: string
   created_at: string
   unique_link: string
+  assigned_to?: string
+  assigned_member?: TeamMember
 }
 
 interface AdminDashboardContentProps {
@@ -388,8 +391,15 @@ export default function AdminDashboardContent({ clients: initialClients, pinnedC
                     </h3>
                     <div className="flex items-center gap-2">
                       <p className="text-xs text-muted-foreground">
-                        {new Date(client.created_at).toLocaleDateString()}
+                        Created {new Date(client.created_at).toLocaleDateString()}
                       </p>
+                      {client.launch_date && (
+                        <p className="text-xs text-accent font-medium">
+                          Launch: {new Date(client.launch_date).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
                       {client.assigned_member && (
                         <div className="flex items-center gap-1.5">
                           <AssignedMemberAvatar 

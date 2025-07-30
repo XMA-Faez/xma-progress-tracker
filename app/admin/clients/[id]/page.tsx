@@ -81,6 +81,7 @@ export default function ManageClientPage({
   const [linksForm, setLinksForm] = useState({
     frame_link: "",
     google_drive_link: "",
+    launch_date: "",
   });
   const [notes, setNotes] = useState("");
   const [isEditingNotes, setIsEditingNotes] = useState(false);
@@ -134,6 +135,7 @@ export default function ManageClientPage({
       setLinksForm({
         frame_link: clientData.frame_link || "",
         google_drive_link: clientData.google_drive_link || "",
+        launch_date: clientData.launch_date || "",
       });
       setNotes(clientData.notes || "");
 
@@ -361,6 +363,7 @@ export default function ManageClientPage({
         .update({
           frame_link: linksForm.frame_link || null,
           google_drive_link: linksForm.google_drive_link || null,
+          launch_date: linksForm.launch_date || null,
         })
         .eq("id", client.id);
 
@@ -503,7 +506,13 @@ export default function ManageClientPage({
               </Link>
               <div className="space-y-1">
                 <h2 className="text-3xl font-bold gradient-text">{client.name}</h2>
-                <p className="text-muted-foreground">Task Management</p>
+                <div className="flex items-center gap-3">
+                  <p className="text-muted-foreground">Task Management</p>
+                  <div className="w-1 h-1 bg-muted-foreground/50 rounded-full" />
+                  <p className="text-accent font-medium text-sm">
+                    Launch: {client.launch_date ? new Date(client.launch_date).toLocaleDateString() : 'not set yet'}
+                  </p>
+                </div>
               </div>
             </div>
             <div className="flex gap-2">
@@ -513,7 +522,7 @@ export default function ManageClientPage({
                 onClick={() => setIsEditLinksModalOpen(true)}
                 className="btn-glass"
               >
-                Edit Links
+                Edit Info
               </Button>
               <Link
                 href={`/client/${client.unique_link}`}
@@ -1006,7 +1015,7 @@ export default function ManageClientPage({
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Client Links</DialogTitle>
+            <DialogTitle>Edit Client Information</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -1032,6 +1041,19 @@ export default function ManageClientPage({
                   })
                 }
                 placeholder="https://drive.google.com/..."
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Launch Date</label>
+              <Input
+                type="date"
+                value={linksForm.launch_date}
+                onChange={(e) =>
+                  setLinksForm({
+                    ...linksForm,
+                    launch_date: e.target.value,
+                  })
+                }
               />
             </div>
             <div className="flex gap-2">

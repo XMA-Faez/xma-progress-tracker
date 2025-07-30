@@ -2,22 +2,11 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { TeamMember } from "@/types";
+import { TeamMember, Client } from "@/types";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { ColorScheme } from "@/lib/colors";
 import { AssignedMemberAvatar } from "@/components/AssignedMemberAvatar";
-
-interface Client {
-  id: string;
-  name: string;
-  unique_link: string;
-  frame_link?: string;
-  google_drive_link?: string;
-  created_at: string;
-  assigned_to?: string;
-  assigned_member?: TeamMember;
-}
 
 interface ClientCardProps {
   client: Client;
@@ -63,9 +52,16 @@ export function ClientCard({ client, isDragging = false, colorMap }: ClientCardP
             <h3 className="text-sm font-medium truncate text-foreground group-hover:text-accent transition-colors duration-200">
               {client.name}
             </h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {new Date(client.created_at).toLocaleDateString()}
-            </p>
+            <div className="space-y-0.5 mt-0.5">
+              <p className="text-xs text-muted-foreground">
+                Created {new Date(client.created_at).toLocaleDateString()}
+              </p>
+              {client.launch_date && (
+                <p className="text-xs text-accent font-medium">
+                  Launch: {new Date(client.launch_date).toLocaleDateString()}
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Link
@@ -102,5 +98,5 @@ export function ClientCard({ client, isDragging = false, colorMap }: ClientCardP
   );
 }
 
-export type { Client, ClientCardProps };
+export type { ClientCardProps };
 

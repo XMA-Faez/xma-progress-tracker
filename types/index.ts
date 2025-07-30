@@ -54,6 +54,7 @@ export interface Client {
   frame_link?: string
   google_drive_link?: string
   notes?: string
+  launch_date?: string
   created_at: string
   updated_at: string
 }
