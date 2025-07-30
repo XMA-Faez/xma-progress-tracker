@@ -10,6 +10,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { TeamMember } from "@/types";
 import { User, GripVertical } from "lucide-react";
 import { ClientCard, Client } from "./ClientCard";
+import { getPersonColor, ColorScheme } from "@/lib/colors";
 
 interface KanbanColumnProps {
   id: string;
@@ -18,6 +19,7 @@ interface KanbanColumnProps {
   onAssignClient: (clientId: string, teamMemberId: string | null) => void;
   isOverColumn: boolean;
   activeType: "client" | "column" | null;
+  colorMap?: Map<string, ColorScheme>;
 }
 
 export function KanbanColumn({
@@ -26,6 +28,7 @@ export function KanbanColumn({
   clients,
   isOverColumn,
   activeType,
+  colorMap,
 }: KanbanColumnProps) {
   const {
     attributes,
@@ -49,6 +52,11 @@ export function KanbanColumn({
   // Determine if this is a valid drop zone
   const isValidDropZone = activeType === "client";
   const shouldHighlight = isOverColumn && isValidDropZone;
+  
+  // Get color scheme for this team member from color map or fallback
+  const colorScheme = teamMember 
+    ? (colorMap?.get(teamMember.id) || getPersonColor(teamMember.id, teamMember.name))
+    : null;
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -64,8 +72,12 @@ export function KanbanColumn({
           shouldHighlight
             ? "ring-2 ring-accent ring-opacity-50 bg-accent/5 scale-[1.02] shadow-lg"
             : isOverColumn && activeType === "column"
-              ? "ring-2 ring-blue-500 ring-opacity-50 bg-blue-500/5"
-              : ""
+              ? colorScheme 
+                ? `ring-2 ${colorScheme.border} ring-opacity-50 ${colorScheme.bg}/50`
+                : "ring-2 ring-blue-500 ring-opacity-50 bg-blue-500/5"
+              : colorScheme
+                ? `border-t-2 ${colorScheme.border}`
+                : ""
         }`}
       >
         <div
@@ -73,20 +85,29 @@ export function KanbanColumn({
           {...listeners}
           className={`flex items-center gap-2 mb-3 transition-all duration-200 cursor-grab active:cursor-grabbing ${
             shouldHighlight ? "text-accent" : ""
-          } ${activeType === "column" && isOverColumn ? "text-blue-500" : ""}`}
+          } ${activeType === "column" && isOverColumn 
+            ? colorScheme ? colorScheme.text : "text-blue-500" 
+            : ""
+          }`}
           title="Drag to reorder columns"
         >
           <div className="opacity-100 transition-colors group-hover:opacity-100">
-            <GripVertical className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
+            <GripVertical className={`h-4 w-4 transition-colors ${
+              colorScheme ? colorScheme.text : "text-muted-foreground hover:text-foreground"
+            }`} />
           </div>
-          <h3 className="text-base font-medium text-foreground flex-1">
+          <h3 className={`text-base font-medium flex-1 ${
+            colorScheme ? colorScheme.text : "text-foreground"
+          }`}>
             {teamMember ? teamMember.name : "Unassigned"}
           </h3>
           <div
             className={`text-xs px-1.5 py-0.5 rounded transition-all duration-200 ${
               shouldHighlight
                 ? "bg-accent/20 text-accent"
-                : "text-muted-foreground bg-secondary/20"
+                : colorScheme
+                  ? `${colorScheme.bg} ${colorScheme.text}`
+                  : "text-muted-foreground bg-secondary/20"
             }`}
           >
             {clients.length}
@@ -110,7 +131,7 @@ export function KanbanColumn({
             }`}
           >
             {clients.map((client) => (
-              <ClientCard key={client.id} client={client} />
+              <ClientCard key={client.id} client={client} colorMap={colorMap} />
             ))}
             {clients.length === 0 && (
               <div

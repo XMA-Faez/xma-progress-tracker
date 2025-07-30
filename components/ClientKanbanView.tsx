@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -21,6 +21,7 @@ import {
 import { TeamMember } from "@/types";
 import { ClientCard, Client } from "./kanban/ClientCard";
 import { KanbanColumn } from "./kanban/KanbanColumn";
+import { getUniqueColorsForTeam } from "@/lib/colors";
 
 interface ClientKanbanViewProps {
   clients: Client[];
@@ -96,6 +97,10 @@ export default function ClientKanbanView({
     setClientsByMember(grouped);
   }, [clients, teamMembers]);
 
+  // Generate unique colors for all team members
+  const teamColorMap = useMemo(() => {
+    return getUniqueColorsForTeam(teamMembers.map(m => ({ id: m.id, name: m.name })))
+  }, [teamMembers]);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -209,6 +214,7 @@ export default function ClientKanbanView({
                   onAssignClient={onClientAssignmentChange}
                   isOverColumn={isOverThisColumn}
                   activeType={activeType}
+                  colorMap={teamColorMap}
                 />
               );
             }
@@ -225,6 +231,7 @@ export default function ClientKanbanView({
                 onAssignClient={onClientAssignmentChange}
                 isOverColumn={isOverThisColumn}
                 activeType={activeType}
+                colorMap={teamColorMap}
               />
             );
           })}

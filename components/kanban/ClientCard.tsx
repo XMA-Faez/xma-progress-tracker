@@ -5,6 +5,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { TeamMember } from "@/types";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { ColorScheme } from "@/lib/colors";
+import { AssignedMemberAvatar } from "@/components/AssignedMemberAvatar";
 
 interface Client {
   id: string;
@@ -20,9 +22,10 @@ interface Client {
 interface ClientCardProps {
   client: Client;
   isDragging?: boolean;
+  colorMap?: Map<string, ColorScheme>;
 }
 
-export function ClientCard({ client, isDragging = false }: ClientCardProps) {
+export function ClientCard({ client, isDragging = false, colorMap }: ClientCardProps) {
   const {
     attributes,
     listeners,
@@ -87,17 +90,11 @@ export function ClientCard({ client, isDragging = false }: ClientCardProps) {
 
         {client.assigned_member && (
           <div className="flex items-center gap-1.5 pt-1">
-            <div
-              className="w-5 h-5 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center"
-              title={client.assigned_member.name}
-            >
-              <span className="text-xs font-medium text-accent">
-                {client.assigned_member.name.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <span className="text-xs text-muted-foreground">
-              {client.assigned_member.name.split(" ")[0]}
-            </span>
+            <AssignedMemberAvatar 
+              member={client.assigned_member} 
+              colorMap={colorMap}
+              size="sm"
+            />
           </div>
         )}
       </div>

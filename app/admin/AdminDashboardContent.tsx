@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Plus, ExternalLink, FolderOpen, Search, Pin, Grid, Columns, Users, Check, User } from 'lucide-react'
 import ClientKanbanView from '@/components/ClientKanbanView'
 import { createClient } from '@/lib/supabase'
+import { getUniqueColorsForTeam } from '@/lib/colors'
+import { AssignedMemberAvatar } from '@/components/AssignedMemberAvatar'
 
 interface Client {
   id: string
@@ -122,6 +124,11 @@ export default function AdminDashboardContent({ clients: initialClients, pinnedC
       alert('Failed to update assignment. Please try again.')
     }
   }
+
+  // Generate unique colors for team members
+  const teamColorMap = useMemo(() => {
+    return getUniqueColorsForTeam(teamMembers.map(m => ({ id: m.id, name: m.name })))
+  }, [teamMembers]);
 
   const filteredClients = useMemo(() => {
     if (!clients) return null
@@ -385,17 +392,11 @@ export default function AdminDashboardContent({ clients: initialClients, pinnedC
                       </p>
                       {client.assigned_member && (
                         <div className="flex items-center gap-1.5">
-                          <div
-                            className="w-4 h-4 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center"
-                            title={client.assigned_member.name}
-                          >
-                            <span className="text-xs font-medium text-accent">
-                              {client.assigned_member.name.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <span className="text-xs text-accent font-medium">
-                            {client.assigned_member.name.split(' ')[0]}
-                          </span>
+                          <AssignedMemberAvatar 
+                            member={client.assigned_member} 
+                            colorMap={teamColorMap}
+                            size="xs"
+                          />
                         </div>
                       )}
                     </div>
