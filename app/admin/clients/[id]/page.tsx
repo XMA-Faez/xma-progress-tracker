@@ -66,6 +66,7 @@ export default function ManageClientPage({
   const [tasks, setTasks] = useState<ClientTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingAssignments, setLoadingAssignments] = useState<Set<string>>(new Set());
+  const [loadingStatuses, setLoadingStatuses] = useState<Set<string>>(new Set());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -160,6 +161,26 @@ export default function ManageClientPage({
   };
 
   const handleUpdateTaskStatus = async (taskId: string, newStatus: TaskStatus) => {
+    // Add to loading state
+    setLoadingStatuses(prev => new Set(prev).add(taskId));
+    
+    // Store previous state for rollback
+    const previousTasks = [...tasks];
+    
+    // Optimistic update - update UI immediately
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              status: newStatus,
+              completed: newStatus === 'completed',
+              completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
+            }
+          : task,
+      ),
+    );
+    
     try {
       const supabase = createClient();
       const { error } = await supabase
@@ -172,21 +193,20 @@ export default function ManageClientPage({
         .eq("id", taskId);
 
       if (error) throw error;
-
-      setTasks(
-        tasks.map((task) =>
-          task.id === taskId
-            ? {
-                ...task,
-                status: newStatus,
-                completed: newStatus === 'completed',
-                completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
-              }
-            : task,
-        ),
-      );
     } catch (error) {
       console.error("Error updating task:", error);
+      // Rollback on error
+      setTasks(previousTasks);
+      
+      // Show error message to user
+      alert('Failed to update status. Please try again.');
+    } finally {
+      // Remove from loading state
+      setLoadingStatuses(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(taskId);
+        return newSet;
+      });
     }
   };
 
@@ -642,8 +662,11 @@ export default function ManageClientPage({
                             <Select
                               value={task.status || "not_started"}
                               onValueChange={(value) => handleUpdateTaskStatus(task.id, value as TaskStatus)}
+                              disabled={loadingStatuses.has(task.id)}
                             >
-                              <SelectTrigger className="w-[180px] h-9 glass-card">
+                              <SelectTrigger className={`w-[180px] h-9 glass-card ${
+                                loadingStatuses.has(task.id) ? 'opacity-50 cursor-not-allowed animate-pulse' : ''
+                              }`}>
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>

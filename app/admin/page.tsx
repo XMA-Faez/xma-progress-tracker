@@ -7,15 +7,29 @@ export default async function AdminDashboard() {
   // Get current user
   const { data: { user } } = await supabase.auth.getUser()
   
-  // Fetch all clients
+  // Fetch all clients with their assigned team member
   const { data: clients, error } = await supabase
     .from('clients')
-    .select('*')
+    .select(`
+      *,
+      assigned_member:team_members!assigned_to (
+        id,
+        name,
+        role
+      )
+    `)
     .order('created_at', { ascending: false })
 
   if (error) {
     console.error('Error fetching clients:', error)
   }
+
+  // Fetch team members
+  const { data: teamMembers } = await supabase
+    .from('team_members')
+    .select('*')
+    .eq('active', true)
+    .order('name')
 
   // Fetch user's pinned clients
   let pinnedClientIds: string[] = []
@@ -28,5 +42,10 @@ export default async function AdminDashboard() {
     pinnedClientIds = pins?.map(pin => pin.client_id) || []
   }
 
-  return <AdminDashboardContent clients={clients} pinnedClientIds={pinnedClientIds} userId={user?.id} />
+  return <AdminDashboardContent 
+    clients={clients} 
+    pinnedClientIds={pinnedClientIds} 
+    userId={user?.id} 
+    teamMembers={teamMembers || []}
+  />
 }

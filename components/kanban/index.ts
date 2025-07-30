@@ -1,0 +1,6 @@
+export { ClientCard } from './ClientCard'
+export { KanbanColumn } from './KanbanColumn'
+export { DropZone } from './DropZone'
+export type { Client, ClientCardProps } from './ClientCard'
+export type { KanbanColumnProps } from './KanbanColumn'
+export type { DropZoneProps } from './DropZone'
