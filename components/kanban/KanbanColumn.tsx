@@ -10,7 +10,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { TeamMember, Client } from "@/types";
 import { User, GripVertical } from "lucide-react";
 import { ClientCard } from "./ClientCard";
-import { getPersonColor, ColorScheme } from "@/lib/colors";
+import { ColorScheme } from "@/lib/colors";
 
 interface KanbanColumnProps {
   id: string;
@@ -53,10 +53,8 @@ export function KanbanColumn({
   const isValidDropZone = activeType === "client";
   const shouldHighlight = isOverColumn && isValidDropZone;
   
-  // Get color scheme for this team member from color map or fallback
-  const colorScheme = teamMember 
-    ? (colorMap?.get(teamMember.id) || getPersonColor(teamMember.id, teamMember.name))
-    : null;
+  // Get color scheme for this team member from color map
+  const colorScheme = teamMember ? colorMap?.get(teamMember.id) : null;
 
   const style = {
     transform: CSS.Transform.toString(transform),

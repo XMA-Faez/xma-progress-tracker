@@ -1,5 +1,5 @@
 /**
- * Utility functions for generating consistent colors for team members
+ * Preset color system for team member assignment
  */
 
 interface ColorScheme {
@@ -7,169 +7,120 @@ interface ColorScheme {
   border: string
   text: string
   accent: string
+  name: string
 }
 
-const colorPalette: ColorScheme[] = [
+// 10 preset colors for manual assignment
+const PRESET_COLORS: ColorScheme[] = [
   {
     bg: 'bg-red-500/20',
     border: 'border-red-500/30',
     text: 'text-red-400',
-    accent: 'bg-red-500'
+    accent: 'bg-red-500',
+    name: 'Red'
+  },
+  {
+    bg: 'bg-blue-500/20',
+    border: 'border-blue-500/30',
+    text: 'text-blue-400', 
+    accent: 'bg-blue-500',
+    name: 'Blue'
   },
   {
     bg: 'bg-green-500/20',
     border: 'border-green-500/30',
-    text: 'text-green-400', 
-    accent: 'bg-green-500'
+    text: 'text-green-400',
+    accent: 'bg-green-500',
+    name: 'Green'
   },
   {
     bg: 'bg-purple-500/20',
     border: 'border-purple-500/30',
     text: 'text-purple-400',
-    accent: 'bg-purple-500'
+    accent: 'bg-purple-500',
+    name: 'Purple'
   },
   {
     bg: 'bg-orange-500/20',
     border: 'border-orange-500/30',
     text: 'text-orange-400',
-    accent: 'bg-orange-500'
+    accent: 'bg-orange-500',
+    name: 'Orange'
   },
   {
     bg: 'bg-cyan-500/20',
     border: 'border-cyan-500/30',
     text: 'text-cyan-400',
-    accent: 'bg-cyan-500'
+    accent: 'bg-cyan-500',
+    name: 'Cyan'
   },
   {
-    bg: 'bg-yellow-500/20',
-    border: 'border-yellow-500/30',
-    text: 'text-yellow-400',
-    accent: 'bg-yellow-500'
+    bg: 'bg-pink-500/20',
+    border: 'border-pink-500/30',
+    text: 'text-pink-400',
+    accent: 'bg-pink-500',
+    name: 'Pink'
   },
   {
     bg: 'bg-teal-500/20',
     border: 'border-teal-500/30',
     text: 'text-teal-400',
-    accent: 'bg-teal-500'
-  },
-  {
-    bg: 'bg-lime-500/20',
-    border: 'border-lime-500/30',
-    text: 'text-lime-400',
-    accent: 'bg-lime-500'
+    accent: 'bg-teal-500',
+    name: 'Teal'
   },
   {
     bg: 'bg-amber-500/20',
     border: 'border-amber-500/30',
     text: 'text-amber-400',
-    accent: 'bg-amber-500'
-  },
-  {
-    bg: 'bg-rose-500/20',
-    border: 'border-rose-500/30',
-    text: 'text-rose-400',
-    accent: 'bg-rose-500'
-  },
-  {
-    bg: 'bg-violet-500/20',
-    border: 'border-violet-500/30',
-    text: 'text-violet-400',
-    accent: 'bg-violet-500'
+    accent: 'bg-amber-500',
+    name: 'Amber'
   },
   {
     bg: 'bg-emerald-500/20',
     border: 'border-emerald-500/30',
     text: 'text-emerald-400',
-    accent: 'bg-emerald-500'
-  },
+    accent: 'bg-emerald-500',
+    name: 'Emerald'
+  }
 ]
 
 /**
- * Generate a simple hash from a string
+ * Get all available preset colors
  */
-function simpleHash(str: string): number {
-  let hash = 0
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
-    hash = hash & hash // Convert to 32-bit integer
-  }
-  return hash
+export function getPresetColors(): ColorScheme[] {
+  return [...PRESET_COLORS]
 }
 
 /**
- * Get consistent color scheme for a team member, with collision avoidance
+ * Get color scheme by index (0-9)
  */
-export function getPersonColor(memberId: string, memberName?: string, usedIndices: number[] = []): ColorScheme {
-  // Try multiple hash inputs to avoid collisions
-  const hashInputs = [
-    memberId,
-    memberName ? `${memberName}-${memberId}` : `${memberId}-primary`,
-    memberName ? `${memberId}-${memberName}` : `${memberId}-secondary`, 
-    memberName ? `${memberName.split(' ')[0]}-${memberId}` : `${memberId}-tertiary`,
-    `${memberId}-${Date.now().toString().slice(-6)}` // Last resort with timestamp
-  ]
-  
-  for (const input of hashInputs) {
-    const hash = simpleHash(input)
-    const index = Math.abs(hash) % colorPalette.length
-    
-    // If no collision avoidance needed, or this index is available
-    if (usedIndices.length === 0 || !usedIndices.includes(index)) {
-      return colorPalette[index]
-    }
-  }
-  
-  // Fallback: find first unused color, or just use the basic hash
-  for (let i = 0; i < colorPalette.length; i++) {
-    if (!usedIndices.includes(i)) {
-      return colorPalette[i]
-    }
-  }
-  
-  // Ultimate fallback
-  const hash = simpleHash(memberId)
-  const index = Math.abs(hash) % colorPalette.length
-  return colorPalette[index]
+export function getColorByIndex(index: number): ColorScheme | null {
+  if (index < 0 || index >= PRESET_COLORS.length) return null
+  return PRESET_COLORS[index]
 }
 
 /**
- * Get unique colors for multiple team members to avoid collisions
+ * Get team member color from their assigned color_index
  */
-export function getUniqueColorsForTeam(teamMembers: Array<{id: string, name: string}>): Map<string, ColorScheme> {
+export function getTeamMemberColor(colorIndex: number | null): ColorScheme | null {
+  if (colorIndex === null || colorIndex === undefined) return null
+  return getColorByIndex(colorIndex)
+}
+
+/**
+ * Create color map for team members based on their assigned colors
+ */
+export function createTeamColorMap(teamMembers: Array<{id: string, color_index?: number | null}>): Map<string, ColorScheme> {
   const colorMap = new Map<string, ColorScheme>()
-  const usedIndices: number[] = []
   
   for (const member of teamMembers) {
-    const color = getPersonColor(member.id, member.name, usedIndices)
-    colorMap.set(member.id, color)
-    
-    // Track which color index was used
-    const colorIndex = colorPalette.findIndex(c => 
-      c.bg === color.bg && c.border === color.border && c.text === color.text
-    )
-    if (colorIndex !== -1) {
-      usedIndices.push(colorIndex)
+    const color = getTeamMemberColor(member.color_index ?? null)
+    if (color) {
+      colorMap.set(member.id, color)
     }
   }
   
   return colorMap
-}
-
-/**
- * Get color classes as a single string for easier use
- */
-export function getPersonColorClasses(memberId: string, memberName?: string): string {
-  const colors = getPersonColor(memberId, memberName)
-  return `${colors.bg} ${colors.border} ${colors.text}`
-}
-
-/**
- * Get just the accent color (solid color for avatars, etc.)
- */
-export function getPersonAccentColor(memberId: string, memberName?: string): string {
-  const colors = getPersonColor(memberId, memberName)
-  return colors.accent
 }
 
 export type { ColorScheme }

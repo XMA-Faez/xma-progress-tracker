@@ -21,7 +21,7 @@ import {
 import { TeamMember, Client } from "@/types";
 import { ClientCard } from "./kanban/ClientCard";
 import { KanbanColumn } from "./kanban/KanbanColumn";
-import { getUniqueColorsForTeam } from "@/lib/colors";
+import { createTeamColorMap } from "@/lib/colors";
 
 interface ClientKanbanViewProps {
   clients: Client[];
@@ -99,7 +99,7 @@ export default function ClientKanbanView({
 
   // Generate unique colors for all team members
   const teamColorMap = useMemo(() => {
-    return getUniqueColorsForTeam(teamMembers.map(m => ({ id: m.id, name: m.name })))
+    return createTeamColorMap(teamMembers.map(m => ({ id: m.id, color_index: m.color_index })))
   }, [teamMembers]);
 
   const handleDragStart = (event: DragStartEvent) => {

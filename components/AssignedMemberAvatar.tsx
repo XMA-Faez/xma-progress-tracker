@@ -1,5 +1,5 @@
 import { TeamMember } from "@/types";
-import { getPersonColor, ColorScheme } from "@/lib/colors";
+import { ColorScheme } from "@/lib/colors";
 
 interface AssignedMemberAvatarProps {
   member: TeamMember;
@@ -8,7 +8,7 @@ interface AssignedMemberAvatarProps {
 }
 
 export function AssignedMemberAvatar({ member, colorMap, size = 'sm' }: AssignedMemberAvatarProps) {
-  const memberColor = colorMap?.get(member.id) || getPersonColor(member.id, member.name);
+  const memberColor = colorMap?.get(member.id);
   
   const sizeClasses = {
     xs: 'w-4 h-4',
@@ -19,14 +19,22 @@ export function AssignedMemberAvatar({ member, colorMap, size = 'sm' }: Assigned
   return (
     <>
       <div
-        className={`${sizeClasses[size]} rounded-full border flex items-center justify-center ${memberColor.bg} ${memberColor.border}`}
+        className={`${sizeClasses[size]} rounded-full border flex items-center justify-center ${
+          memberColor 
+            ? `${memberColor.bg} ${memberColor.border}` 
+            : 'bg-gray-600/30 border-gray-500/50'
+        }`}
         title={member.name}
       >
-        <span className={`text-xs font-medium ${memberColor.text}`}>
+        <span className={`text-xs font-medium ${
+          memberColor ? memberColor.text : 'text-gray-300'
+        }`}>
           {member.name.charAt(0).toUpperCase()}
         </span>
       </div>
-      <span className={`text-xs font-medium ${memberColor.text}`}>
+      <span className={`text-xs font-medium ${
+        memberColor ? memberColor.text : 'text-gray-300'
+      }`}>
         {member.name.split(" ")[0]}
       </span>
     </>

@@ -4,10 +4,10 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, ExternalLink, FolderOpen, Search, Pin, Grid, Columns, Users, Check, User } from 'lucide-react'
+import { Plus, ExternalLink, FolderOpen, Search, Pin, Grid, Columns, Users, Check, User, Palette } from 'lucide-react'
 import ClientKanbanView from '@/components/ClientKanbanView'
 import { createClient } from '@/lib/supabase'
-import { getUniqueColorsForTeam } from '@/lib/colors'
+import { createTeamColorMap } from '@/lib/colors'
 import { AssignedMemberAvatar } from '@/components/AssignedMemberAvatar'
 
 interface Client {
@@ -128,9 +128,9 @@ export default function AdminDashboardContent({ clients: initialClients, pinnedC
     }
   }
 
-  // Generate unique colors for team members
+  // Generate color map for team members
   const teamColorMap = useMemo(() => {
-    return getUniqueColorsForTeam(teamMembers.map(m => ({ id: m.id, name: m.name })))
+    return createTeamColorMap(teamMembers.map(m => ({ id: m.id, color_index: m.color_index })))
   }, [teamMembers]);
 
   const filteredClients = useMemo(() => {
@@ -309,6 +309,12 @@ export default function AdminDashboardContent({ clients: initialClients, pinnedC
                 )}
               </div>
             )}
+            <Link href="/admin/colors">
+              <Button variant="outline" className="btn-glass h-12 px-4 gap-2">
+                <Palette className="h-5 w-5" /> 
+                <span className="font-semibold">Colors</span>
+              </Button>
+            </Link>
             <Link href="/admin/clients/new">
               <Button className="btn-glass h-12 px-6 gap-2">
                 <Plus className="h-5 w-5" /> 

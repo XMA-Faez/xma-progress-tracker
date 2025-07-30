@@ -22,6 +22,7 @@ export interface TeamMember {
   email: string
   role: string
   active: boolean
+  color_index?: number | null
   created_at: string
   updated_at: string
 }

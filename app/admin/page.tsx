@@ -27,7 +27,7 @@ export default async function AdminDashboard() {
   // Fetch team members
   const { data: teamMembers } = await supabase
     .from('team_members')
-    .select('*')
+    .select('*, color_index')
     .eq('active', true)
     .order('name')
 
