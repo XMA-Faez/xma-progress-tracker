@@ -1,9 +1,10 @@
 'use client'
 
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, ExternalLink, FolderOpen } from 'lucide-react'
+import { Plus, ExternalLink, FolderOpen, Search } from 'lucide-react'
 
 interface Client {
   id: string
@@ -45,6 +46,18 @@ const itemVariants = {
 }
 
 export default function AdminDashboardContent({ clients }: AdminDashboardContentProps) {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredClients = useMemo(() => {
+    if (!clients) return null
+    if (!searchTerm.trim()) return clients
+    
+    const lowerSearchTerm = searchTerm.toLowerCase()
+    return clients.filter(client => 
+      client.name.toLowerCase().includes(lowerSearchTerm)
+    )
+  }, [clients, searchTerm])
+
   return (
     <motion.div
       initial="hidden"
@@ -53,7 +66,7 @@ export default function AdminDashboardContent({ clients }: AdminDashboardContent
       className="space-y-8 relative"
     >
       <motion.div variants={itemVariants} className="glass-card rounded-xl p-6 backdrop-blur-lg relative z-10">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div className="space-y-1">
             <h2 className="text-3xl font-bold gradient-text">All Clients</h2>
             <p className="text-muted-foreground">Manage your client projects and track progress</p>
@@ -65,6 +78,19 @@ export default function AdminDashboardContent({ clients }: AdminDashboardContent
             </Button>
           </Link>
         </div>
+        
+        {clients && clients.length > 0 && (
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search clients..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-secondary/50 border border-border/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200 placeholder:text-muted-foreground/70"
+            />
+          </div>
+        )}
       </motion.div>
 
       {(!clients || clients.length === 0) ? (
@@ -89,7 +115,8 @@ export default function AdminDashboardContent({ clients }: AdminDashboardContent
           variants={containerVariants}
           className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {clients.map((client, index) => (
+          {filteredClients && filteredClients.length > 0 ? (
+            filteredClients.map((client, index) => (
             <motion.div
               key={client.id} 
               variants={itemVariants}
@@ -154,7 +181,23 @@ export default function AdminDashboardContent({ clients }: AdminDashboardContent
                 </div>
               </div>
             </motion.div>
-          ))}
+            ))
+          ) : (
+            <motion.div 
+              variants={itemVariants} 
+              className="col-span-full glass-card rounded-xl p-12 text-center backdrop-blur-lg"
+            >
+              <div className="flex flex-col items-center space-y-4">
+                <div className="p-4 rounded-full bg-accent/10 border border-accent/20">
+                  <Search className="h-12 w-12 text-accent" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold">No clients found</h3>
+                  <p className="text-muted-foreground">Try adjusting your search term</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
       )}
     </motion.div>

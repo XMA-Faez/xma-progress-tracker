@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ExternalLink, Phone, Briefcase, Edit3, Check } from "lucide-react";
-import { TaskType, Stage } from "@/types";
+import { TaskType, Stage, TaskStatus } from "@/types";
 import Logo from "@/public/XMA-White.svg";
+import { TaskStatusBadge } from "@/components/TaskStatusBadge";
 
 interface Task {
   id: string;
@@ -12,6 +13,7 @@ interface Task {
   type: TaskType;
   stage: Stage;
   completed: boolean;
+  status: TaskStatus;
   touchpoint: number;
   order_index: number;
   description?: string;
@@ -317,9 +319,12 @@ export default function ClientPageContent({
                         )}
                       </div>
 
-                      <span className="text-xs text-muted-foreground font-medium">
-                        #{task.touchpoint}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <TaskStatusBadge status={task.status} />
+                        <span className="text-xs text-muted-foreground font-medium">
+                          #{task.touchpoint}
+                        </span>
+                      </div>
                     </motion.div>
                   ))}
 
