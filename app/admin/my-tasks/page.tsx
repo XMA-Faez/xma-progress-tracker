@@ -1,13 +1,12 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase-server'
 import { MyTasksDashboard } from '@/components/MyTasksDashboard'
 
 export default async function MyTasksPage() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = await createClient()
 
   // Get current user
   const { data: { user } } = await supabase.auth.getUser()
-  
+
   // Find team member by email
   const { data: teamMember } = await supabase
     .from('team_members')
@@ -37,7 +36,7 @@ export default async function MyTasksPage() {
       )
     `)
     .eq('task_assignments.team_member_id', teamMember.id)
-    .order('due_date', { ascending: true, nullsLast: true })
+    .order('due_date', { ascending: true, nullsFirst: false })
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -45,7 +44,7 @@ export default async function MyTasksPage() {
         <h1 className="text-3xl font-bold text-white mb-2">My Tasks</h1>
         <p className="text-slate-300">Tasks assigned to {teamMember.name}</p>
       </div>
-      
+
       <MyTasksDashboard tasks={tasks || []} teamMember={teamMember} />
     </div>
   )

@@ -16,12 +16,15 @@ export type TaskStatus =
 
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
 
+export type TaskCategory = 'client_facing' | 'internal'
+
 export interface TeamMember {
   id: string
   name: string
   email: string
   role: string
   active: boolean
+  is_admin?: boolean
   color_index?: number | null
   created_at: string
   updated_at: string
@@ -61,13 +64,15 @@ export interface Client {
 }
 
 export interface ClientTask extends Task {
-  client_id: string
+  client_id?: string | null
   assigned_to?: string
   status: TaskStatus
   due_date?: string
   priority: TaskPriority
   notes?: string
   completed_at?: string
+  task_category: TaskCategory
   team_member?: TeamMember
   task_assignments?: { team_member_id: string; team_members?: TeamMember }[]
+  clients?: { id: string; name: string }
 }

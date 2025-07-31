@@ -29,6 +29,7 @@ export default async function AdminLayout({
         userEmail={user.email || 'User'}
         userName={teamMember?.name || user.email?.split('@')[0] || 'User'}
         profileImage={teamMember?.profile_image}
+        isAdmin={teamMember?.is_admin || false}
       >
         {children}
       </DashboardLayout>

@@ -131,11 +131,26 @@ export function MyTasksDashboard({ tasks: initialTasks, teamMember }: MyTasksDas
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
+                    <span className="text-lg">
+                      {task.task_category === 'client_facing' ? '🏢' : '⚙️'}
+                    </span>
                     <h3 className="text-lg font-medium text-white">{task.name}</h3>
                     <TaskStatusBadge status={task.status} />
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      task.task_category === 'client_facing'
+                        ? 'bg-blue-500/20 text-blue-300'
+                        : 'bg-purple-500/20 text-purple-300'
+                    }`}>
+                      {task.task_category === 'client_facing' ? 'Client' : 'Internal'}
+                    </span>
                   </div>
                   <div className="text-sm text-slate-400 space-y-1">
-                    <p>Client: {task.clients?.name}</p>
+                    {task.task_category === 'client_facing' && task.clients && (
+                      <p>Client: {task.clients.name}</p>
+                    )}
+                    {task.task_category === 'internal' && (
+                      <p>Category: Internal Task</p>
+                    )}
                     <p>Stage: {task.stage} • Touchpoint: #{task.touchpoint}</p>
                     {task.description && (
                       <p className="text-slate-300 mt-2">{task.description}</p>

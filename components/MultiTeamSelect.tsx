@@ -111,10 +111,10 @@ export function MultiTeamSelect({ teamMembers, selectedIds, onChange, className 
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className={`w-full h-9 px-3 text-left bg-background/50 border border-input rounded-md flex items-center justify-between transition-colors glass-card ${
-          disabled 
-            ? 'opacity-50 cursor-not-allowed' 
-            : 'hover:bg-background/70 cursor-pointer'
+        className={`w-full h-9 px-3 text-left bg-slate-900/50 border border-slate-600/50 rounded-md flex items-center justify-between transition-all duration-200 ${
+          disabled
+            ? 'opacity-50 cursor-not-allowed'
+            : 'hover:bg-slate-800/70 hover:border-cyan-500/50 cursor-pointer'
         }`}
       >
         <span className={`text-sm truncate ${disabled ? 'animate-pulse' : ''}`}>
@@ -157,12 +157,12 @@ export function MultiTeamSelect({ teamMembers, selectedIds, onChange, className 
                   <button
                     key={member.id}
                     onClick={() => toggleMember(member.id)}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-slate-700 transition-colors flex items-center justify-between ${
-                      isSelected ? 'text-white bg-slate-700/50' : 'text-slate-300'
+                    className={`w-full text-left px-3 py-2 text-sm hover:bg-slate-700/70 transition-all duration-200 flex items-center justify-between ${
+                      isSelected ? 'text-white bg-slate-700/50 border-l-2 border-cyan-500' : 'text-slate-300'
                     }`}
                   >
-                    <span>{member.name}</span>
-                    {isSelected && <Check className="h-4 w-4 text-green-400" />}
+                    <span className={isSelected ? 'font-medium' : ''}>{member.name}</span>
+                    {isSelected && <Check className="h-4 w-4 text-cyan-400" />}
                   </button>
                 )
               })}

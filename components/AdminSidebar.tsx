@@ -32,9 +32,10 @@ interface AdminSidebarProps {
   userEmail: string;
   userName: string;
   profileImage?: string;
+  isAdmin?: boolean;
 }
 
-export function AdminSidebar({ userEmail, userName, profileImage }: AdminSidebarProps) {
+export function AdminSidebar({ userEmail, userName, profileImage, isAdmin = false }: AdminSidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isClientsExpanded, setIsClientsExpanded] = useState(true);
@@ -86,6 +87,13 @@ export function AdminSidebar({ userEmail, userName, profileImage }: AdminSidebar
       icon: FileText,
       label: "My Tasks",
       active: pathname === "/admin/my-tasks",
+    },
+    {
+      href: "/admin/task-management",
+      icon: Calendar,
+      label: "Task Management",
+      active: pathname === "/admin/task-management",
+      adminOnly: true,
     },
     {
       href: "/admin/team",
@@ -195,7 +203,9 @@ export function AdminSidebar({ userEmail, userName, profileImage }: AdminSidebar
 
           {/* Navigation */}
           <nav className="flex-1 space-y-2">
-            {navigationItems.map((item) => (
+            {navigationItems
+              .filter(item => !item.adminOnly || isAdmin)
+              .map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

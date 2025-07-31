@@ -1,9 +1,8 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase-server'
 import { ExecutiveOverview } from '@/components/ExecutiveOverview'
 
 export default async function OverviewPage() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = await createClient()
 
   const [
     { data: clients },

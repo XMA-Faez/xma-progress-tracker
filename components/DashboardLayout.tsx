@@ -7,6 +7,7 @@ interface DashboardLayoutProps {
   userEmail: string;
   userName: string;
   profileImage?: string;
+  isAdmin?: boolean;
 }
 
 export function DashboardLayout({
@@ -14,6 +15,7 @@ export function DashboardLayout({
   userEmail,
   userName,
   profileImage,
+  isAdmin = false,
 }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen flex bg-background">
@@ -22,6 +24,7 @@ export function DashboardLayout({
         userEmail={userEmail}
         userName={userName}
         profileImage={profileImage}
+        isAdmin={isAdmin}
       />
 
       {/* Main Content Area */}

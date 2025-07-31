@@ -1,10 +1,9 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase-server'
 import { TeamDashboard } from '@/components/TeamDashboard'
 import { TeamMember } from '@/types'
 
 export default async function TeamPage() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = await createClient()
 
   const { data: teamMembers } = await supabase
     .from('team_members')
