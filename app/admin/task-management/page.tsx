@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
-import { MinimalTaskManagement } from '@/components/MinimalTaskManagement'
+import { MinimalTaskManagement, MinimalTaskManagementPremium } from '@/components/MinimalTaskManagement'
 
 export default async function TaskManagementPage() {
   const supabase = await createClient()
@@ -45,7 +45,7 @@ export default async function TaskManagementPage() {
 
   return (
     <div className="min-h-screen">
-      <MinimalTaskManagement
+      <MinimalTaskManagementPremium
         teamMembers={teamMembers || []}
         clients={clients || []}
         currentUser={teamMember}

@@ -1,0 +1,496 @@
+/* MinimalTaskManagement Premium Design System */
+
+/* ===========================
+   Premium Static Styles
+   =========================== */
+
+/* ===========================
+   Premium Container Styling
+   =========================== */
+
+.minimal-task-management-premium {
+  position: relative;
+  opacity: 1;
+}
+
+/* ===========================
+   Premium Task Header
+   =========================== */
+
+.task-header-premium {
+  position: relative;
+  padding: 2rem;
+  background: linear-gradient(135deg, 
+    oklch(0.20 0.03 265 / 40%) 0%, 
+    oklch(0.18 0.025 270 / 30%) 100%);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(20px);
+  border: 1px solid oklch(0.65 0.18 195 / 20%);
+  overflow: hidden;
+}
+
+.task-header-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    oklch(0.65 0.18 195 / 50%) 50%, 
+    transparent 100%);
+}
+
+.task-header-premium h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, 
+    oklch(0.95 0.01 0) 0%, 
+    oklch(0.85 0.015 0) 50%, 
+    oklch(0.98 0.005 0) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.task-header-premium p {
+  font-size: 1rem;
+  color: oklch(0.65 0.02 260);
+  letter-spacing: 0.05em;
+  font-weight: 400;
+}
+
+/* Premium Create Button */
+.btn-create-premium {
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.18 195 / 90%) 0%, 
+    oklch(0.65 0.18 210 / 80%) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid oklch(0.65 0.18 195 / 40%);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px oklch(0.65 0.18 195 / 20%),
+              inset 0 1px 0 oklch(1 0 0 / 10%);
+}
+
+.btn-create-premium::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: oklch(1 0 0 / 20%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-create-premium:hover {
+  background: linear-gradient(135deg, 
+    oklch(0.70 0.20 195 / 95%) 0%, 
+    oklch(0.70 0.20 210 / 85%) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px oklch(0.65 0.18 195 / 30%),
+              inset 0 1px 0 oklch(1 0 0 / 20%);
+}
+
+.btn-create-premium:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ===========================
+   Premium Filter Section
+   =========================== */
+
+.task-filters-premium {
+  background: linear-gradient(135deg, 
+    oklch(0.18 0.025 265 / 50%) 0%, 
+    oklch(0.16 0.02 270 / 40%) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid oklch(0.65 0.18 195 / 20%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-filters-premium::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, oklch(0.65 0.18 195 / 5%) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Premium Input Styling */
+.input-premium {
+  background: linear-gradient(135deg, 
+    oklch(0.22 0.025 265 / 60%) 0%, 
+    oklch(0.20 0.02 270 / 50%) 100%);
+  border: 1px solid oklch(0.65 0.18 195 / 20%);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.input-premium:focus {
+  background: linear-gradient(135deg, 
+    oklch(0.24 0.025 265 / 70%) 0%, 
+    oklch(0.22 0.02 270 / 60%) 100%);
+  border-color: oklch(0.65 0.18 195 / 50%);
+  box-shadow: 0 0 0 3px oklch(0.65 0.18 195 / 10%),
+              0 0 20px oklch(0.65 0.18 195 / 20%);
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   Premium Task Group
+   =========================== */
+
+.task-group-premium {
+  position: relative;
+  opacity: 1;
+}
+
+.task-group-header-premium {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.task-group-header-premium::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    oklch(0.65 0.18 195) 0%, 
+    oklch(0.65 0.18 220) 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 10px oklch(0.65 0.18 195 / 50%);
+}
+
+.task-group-title-premium {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: oklch(0.98 0.01 0);
+  transition: all 0.3s ease;
+}
+
+.task-group-premium:hover .task-group-title-premium {
+  color: oklch(0.65 0.18 195);
+  text-shadow: 0 0 20px oklch(0.65 0.18 195 / 30%);
+}
+
+.task-group-badge-premium {
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.18 195 / 20%) 0%, 
+    oklch(0.65 0.18 210 / 15%) 100%);
+  border: 1px solid oklch(0.65 0.18 195 / 30%);
+  color: oklch(0.75 0.18 195);
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(4px);
+}
+
+/* ===========================
+   Premium Task Card
+   =========================== */
+
+.task-card-premium {
+  background: linear-gradient(135deg, 
+    oklch(0.18 0.025 265 / 70%) 0%, 
+    oklch(0.16 0.02 270 / 60%) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid oklch(0.65 0.18 195 / 15%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.task-card-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.18 195 / 0%) 0%, 
+    oklch(0.65 0.18 195 / 5%) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.task-card-premium:hover {
+  border-color: oklch(0.65 0.18 195 / 30%);
+  box-shadow: 0 20px 40px oklch(0 0 0 / 20%),
+              0 0 40px oklch(0.65 0.18 195 / 10%);
+}
+
+.task-card-premium:hover::before {
+  opacity: 1;
+}
+
+/* Priority Border Animation */
+.task-card-priority-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  transition: all 0.3s ease;
+}
+
+.task-card-priority-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.task-card-premium:hover .task-card-priority-border::after {
+  opacity: 1;
+}
+
+/* Task Title */
+.task-title-premium {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: oklch(0.98 0.01 0);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.task-card-premium:hover .task-title-premium {
+  color: oklch(0.65 0.18 195);
+  text-shadow: 0 0 10px oklch(0.65 0.18 195 / 30%);
+}
+
+/* Task Description */
+.task-description-premium {
+  color: oklch(0.70 0.02 260);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.task-card-premium:hover .task-description-premium {
+  color: oklch(0.80 0.02 260);
+}
+
+/* Task Meta Info */
+.task-meta-premium {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: oklch(0.55 0.02 260);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.task-meta-premium span {
+  transition: color 0.3s ease;
+}
+
+.task-card-premium:hover .task-meta-premium span {
+  color: oklch(0.65 0.02 260);
+}
+
+/* Premium Status Badge */
+.task-status-badge-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-status-badge-premium::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, oklch(1 0 0 / 20%) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease;
+}
+
+.task-card-premium:hover .task-status-badge-premium::before {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* Premium Select/Dropdown */
+.select-premium {
+  background: linear-gradient(135deg, 
+    oklch(0.20 0.025 265 / 60%) 0%, 
+    oklch(0.18 0.02 270 / 50%) 100%);
+  border: 1px solid oklch(0.65 0.18 195 / 20%);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.select-premium:hover {
+  background: linear-gradient(135deg, 
+    oklch(0.22 0.025 265 / 70%) 0%, 
+    oklch(0.20 0.02 270 / 60%) 100%);
+  border-color: oklch(0.65 0.18 195 / 40%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px oklch(0.65 0.18 195 / 10%);
+}
+
+/* Premium Checkbox */
+.checkbox-premium {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid oklch(0.65 0.18 195 / 40%);
+  background: linear-gradient(135deg, 
+    oklch(0.20 0.025 265 / 40%) 0%, 
+    oklch(0.18 0.02 270 / 30%) 100%);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.checkbox-premium:hover {
+  border-color: oklch(0.65 0.18 195 / 60%);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px oklch(0.65 0.18 195 / 20%);
+}
+
+.checkbox-premium:checked {
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.18 195) 0%, 
+    oklch(0.65 0.18 210) 100%);
+  border-color: oklch(0.65 0.18 195);
+}
+
+/* ===========================
+   Premium Hover Effects
+   =========================== */
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px oklch(0.65 0.18 195 / 20%);
+}
+
+/* ===========================
+   Loading States
+   =========================== */
+
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    oklch(0.18 0.025 265 / 60%) 0%, 
+    oklch(0.22 0.025 265 / 80%) 50%, 
+    oklch(0.18 0.025 265 / 60%) 100%);
+  background-size: 200% 100%;
+}
+
+/* ===========================
+   Premium Transitions
+   =========================== */
+
+.transition-premium {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.transition-premium-fast {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.transition-premium-slow {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===========================
+   Responsive Adjustments
+   =========================== */
+
+@media (max-width: 768px) {
+  .task-header-premium h1 {
+    font-size: 2rem;
+  }
+  
+  .task-card-premium {
+    padding: 1.25rem;
+  }
+  
+  .task-title-premium {
+    font-size: 1rem;
+  }
+}
+
+/* ===========================
+   Accessibility Enhancements
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus Visible States */
+.focus-premium:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px oklch(0.65 0.18 195 / 40%),
+              0 0 20px oklch(0.65 0.18 195 / 20%);
+}

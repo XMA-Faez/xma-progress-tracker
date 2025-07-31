@@ -263,7 +263,7 @@ export function useUpdateTaskPriority() {
   return useMutation({
     mutationFn: async ({ taskId, priority }: { taskId: string; priority: TaskPriority }) => {
       const { error } = await supabase
-        .from('tasks')
+        .from('client_tasks')
         .update({ priority })
         .eq('id', taskId)
 
